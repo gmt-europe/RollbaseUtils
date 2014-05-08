@@ -52,6 +52,24 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.9.0</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <schemaDirectory>src/main/resources/nl/gmt/rollbase/shared/schema</schemaDirectory>
+                            <generatePackage>nl.gmt.rollbase.shared.schema</generatePackage>
+                            <removeOldOutput>true</removeOldOutput>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

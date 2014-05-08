@@ -1,927 +1,1286 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="Application">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="DisplayName" type="xs:string"/>
-                <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                <xs:element name="Description" type="xs:string"/>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Description" type="xs:string"/>
 
-                <xs:element name="DependentDefs" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="DataObjectDef" type="DependentObjectDefEl" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="DependentDefs" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="DataObjectDef" type="DependentDataObjectDefType" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="DataObjectDefs" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="DataObjectDef" type="DataObjectDefEl" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="DataObjectDefs" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="DataObjectDef" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="Menus" type="MenusEl" minOccurs="0"/>
-                <xs:element name="WebPageDefs" type="WebPageDefsEl" minOccurs="0"/>
+                        <xs:element name="Menus" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Menu" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="Portals">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="WebSite" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="SiteName" type="xs:string"/>
-                                        <xs:element name="Stylesheet" type="xs:string"/>
-                                        <xs:element name="Props" type="PropsEl"/>
-                                        <xs:element name="Description" type="xs:string"/>
-                                        <xs:element name="Header" type="xs:base64Binary" minOccurs="0"/>
-                                        <xs:element name="Footer" type="xs:base64Binary" minOccurs="0"/>
-                                        <xs:element name="WebPageDefs" type="WebPageDefsEl" minOccurs="0"/>
-                                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                    </xs:sequence>
+                        <xs:element name="WebPageDefs" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="WebPageDef" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                                    <xs:attribute name="id" type="xs:string" use="required"/>
-                                    <xs:attribute name="origId" type="xs:string" use="required"/>
-                                    <xs:attribute name="isMain" type="xs:boolean" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="Portals">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="WebSite" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="LegacyReports" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Report" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                        <xs:element name="Description" type="xs:string"/>
-                                        <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                        <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
-                                        <xs:element name="Columns" type="xs:string"/>
-                                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                    </xs:sequence>
+                        <xs:element name="LegacyReports" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="Report" type="LegacyReport" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                                    <xs:attribute name="id" type="xs:string" use="required"/>
-                                    <xs:attribute name="origId" type="xs:string" use="required"/>
-                                    <xs:attribute name="objDefId" type="xs:long" use="required"/>
-                                    <xs:attribute name="reportType" type="xs:string" use="required"/>
-                                    <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
-                                    <xs:attribute name="fileName" type="xs:string" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="Roles" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Role" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="Roles" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Role" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Name" type="xs:string"/>
-                                        <xs:element name="Description" type="xs:string"/>
-                                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                        <xs:element name="Props" type="PropsEl"/>
-                                    </xs:sequence>
+                        <xs:element name="HostedFiles" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="HostedFile" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                                    <xs:attribute name="id" type="xs:string" use="required"/>
-                                    <xs:attribute name="origId" type="xs:string" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="BatchJobs" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Event" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="HostedFiles" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="HostedFile" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="DisplayName" type="xs:string"/>
-                                        <xs:element name="Description" type="xs:string"/>
-                                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                        <xs:element name="RawData" type="xs:base64Binary"/>
-                                    </xs:sequence>
+                        <xs:element name="Permissions" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Permission" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                                    <xs:attribute name="id" type="xs:string" use="required"/>
-                                    <xs:attribute name="origId" type="xs:string" use="required"/>
-                                    <xs:attribute name="fileName" type="xs:string" use="required"/>
-                                    <xs:attribute name="contentType" type="xs:string" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="RolePages" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="RolePage" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="BatchJobs" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Event" type="EventEl" minOccurs="0" maxOccurs="unbounded"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
 
-                <xs:element name="Permissions" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Permission" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:attribute name="resId" type="xs:long" use="required"/>
-                                    <xs:attribute name="prId" type="xs:long" use="required"/>
-                                    <xs:attribute name="actionsSet" type="xs:int" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="Tokens" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Token" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="RolePages" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="RolePage" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:attribute name="pageDefId" type="xs:long" use="required"/>
-                                    <xs:attribute name="pageId" type="xs:long" use="required"/>
-                                    <xs:attribute name="roleId" type="xs:long" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
+                        <xs:element name="SeedRecords" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="DataObject" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
 
-                <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
+                        <xs:element name="CustomLogo" type="xs:base64Binary" minOccurs="0"/>
+                    </xs:sequence>
 
-                <xs:element name="Tokens" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Token" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Lang">
-                                            <xs:complexType>
-                                                <xs:attribute name="code" type="xs:string" use="required"/>
-                                                <xs:attribute name="text" type="xs:string" use="required"/>
-                                            </xs:complexType>
-                                        </xs:element>
-                                    </xs:sequence>
-
-                                    <xs:attribute name="name" type="xs:string" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="SeedRecords" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="DataObject" type="DataObjectEl" minOccurs="0" maxOccurs="unbounded"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="CustomLogo" type="xs:base64Binary" minOccurs="0"/>
-            </xs:sequence>
-
-            <xs:attribute name="id" type="xs:string" use="required"/>
-            <xs:attribute name="origId" type="xs:string" use="required"/>
-            <xs:attribute name="orderNo" type="xs:int" use="required"/>
-            <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-            <xs:attribute name="version" type="xs:int" use="required"/>
-            <xs:attribute name="packedId" type="xs:long" use="required"/>
-            <xs:attribute name="language" type="xs:string" use="required"/>
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
+                    <xs:attribute name="version" type="xs:int" use="required"/>
+                    <xs:attribute name="packedId" type="xs:long" use="required"/>
+                    <xs:attribute name="language" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="DependentObjectDefEl">
-
-        <xs:sequence>
-            <xs:element name="SingularName" type="xs:string"/>
-            <xs:element name="PluralName" type="xs:string"/>
-            <xs:element name="Description" type="xs:string"/>
-
-            <xs:element name="DataFieldDefs">
-                <xs:complexType>
+    <xs:element name="Token">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbElement">
                     <xs:sequence>
-                        <xs:element name="DataFieldDef" minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="Lang" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    At least one translation will exist. The
+                                    first translation always is the one of the
+                                    base language.
+                                </xs:documentation>
+                            </xs:annotation>
                             <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayLabel" type="xs:string"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="fieldName" type="xs:string" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="ListViews" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="ListView" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="ViewName" type="xs:string"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="RelationshipDefs" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="RelationshipDef" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="relName" type="xs:string" use="required"/>
-                                <xs:attribute name="objDef1" type="xs:string" use="optional"/>
-                                <xs:attribute name="objDef2" type="xs:string" use="required"/>
-                                <xs:attribute name="singularName1" type="xs:string" use="required"/>
-                                <xs:attribute name="pluralName1" type="xs:string" use="required"/>
-                                <xs:attribute name="singularName2" type="xs:string" use="required"/>
-                                <xs:attribute name="pluralName2" type="xs:string" use="required"/>
-                                <xs:attribute name="isMultiple1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isMultiple2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="orphanControl1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="orphanControl2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="cloneRelated1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="cloneRelated2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isPkFk" type="xs:boolean" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="origId" type="xs:string" use="required"/>
-        <xs:attribute name="objDefName" type="xs:string" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="DataObjectDefEl">
-        <xs:sequence>
-            <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-            <xs:element name="SingularName" type="xs:string" minOccurs="0"/>
-            <xs:element name="PluralName" type="xs:string" minOccurs="0"/>
-            <xs:element name="NameTemplate" type="xs:string" minOccurs="0"/>
-            <xs:element name="Description" type="xs:string" minOccurs="0"/>
-
-            <xs:element name="DataFieldDefs">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="DataFieldDef" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <!-- These are shared -->
-
-                                    <xs:element name="DisplayLabel" type="xs:string"/>
-                                    <xs:element name="Description" type="xs:string" minOccurs="0"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="ValidationScriptB64" type="xs:base64Binary" minOccurs="0"/>
-
-                                    <!-- These are of select list -->
-
-                                    <xs:element name="ListItems" minOccurs="0">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="ListItem" type="ListItemEl" minOccurs="0"
-                                                            maxOccurs="unbounded"/>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-
-                                    <!-- These are of shared image -->
-
-                                    <xs:element name="ImageData" type="xs:base64Binary" minOccurs="0"/>
-
-                                    <!-- These are shared -->
-
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDef" type="xs:string" use="required"/>
-                                <xs:attribute name="columnName" type="xs:string" use="optional"/>
-                                <xs:attribute name="fieldName" type="xs:string" use="required"/>
-                                <xs:attribute name="groupName" type="xs:string" use="optional"/>
-                                <xs:attribute name="dataClassName" type="xs:string" use="required"/>
-                                <xs:attribute name="uiClassName" type="xs:string" use="required"/>
-                                <xs:attribute name="isRequired" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isReadOnly" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isTextIndexable" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isAuditable" type="xs:boolean" use="required"/>
-                                <xs:attribute name="hasPermissions" type="xs:boolean" use="required"/>
-                                <xs:attribute name="maxLength" type="xs:int" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="RelationshipDefs">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="RelationshipDef" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="relName" type="xs:string" use="required"/>
-                                <xs:attribute name="objDef1" type="xs:string" use="required"/>
-                                <xs:attribute name="objDef2" type="xs:string" use="required"/>
-                                <xs:attribute name="singularName1" type="xs:string" use="required"/>
-                                <xs:attribute name="pluralName1" type="xs:string" use="required"/>
-                                <xs:attribute name="singularName2" type="xs:string" use="required"/>
-                                <xs:attribute name="pluralName2" type="xs:string" use="required"/>
-                                <xs:attribute name="isMultiple1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isMultiple2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="orphanControl1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="orphanControl2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="cloneRelated1" type="xs:boolean" use="required"/>
-                                <xs:attribute name="cloneRelated2" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isPkFk" type="xs:boolean" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="ListViews">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="ListView" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="ViewName" type="xs:string"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="Columns" type="xs:string"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Actions" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Action" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayName" type="xs:string"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="ConditionB64" type="xs:base64Binary" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="actionType" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="pageId" type="xs:string" use="required"/>
-                                <xs:attribute name="nextStatusId" type="xs:string" use="required"/>
-                                <xs:attribute name="isGroup" type="xs:boolean" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Statuses" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Status" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayName" type="xs:string"/>
-                                    <xs:element name="SystemName" type="xs:string" minOccurs="0"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Processes" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Process" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayName" type="xs:string"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-
-                                    <xs:element name="Workflow">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="Node" minOccurs="0"
-                                                            maxOccurs="unbounded">
-                                                    <xs:complexType>
-                                                        <xs:attribute name="s" type="xs:string" use="required"/>
-                                                        <xs:attribute name="a" type="xs:string" use="required"/>
-                                                    </xs:complexType>
-                                                </xs:element>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="defStatusId" type="xs:string" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Buttons" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Buttons">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayName" type="xs:string"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                    <xs:element name="ScriptB64" type="xs:base64Binary"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="ConversionMaps" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="ConversionMap" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="MapNodes">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="MapNode" minOccurs="0" maxOccurs="unbounded">
-                                                    <xs:complexType>
-                                                        <xs:attribute name="dest" type="xs:string" use="required"/>
-                                                        <xs:attribute name="src" type="xs:string" use="required"/>
-                                                        <xs:attribute name="const" type="xs:string" use="required"/>
-                                                    </xs:complexType>
-                                                </xs:element>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-
-                                    <xs:element name="CloneNodes" minOccurs="0">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="CloneNode" minOccurs="0" maxOccurs="unbounded">
-                                                    <xs:complexType>
-                                                        <xs:attribute name="objDef" type="xs:string" use="required"/>
-                                                        <xs:attribute name="srcRel" type="xs:string" use="required"/>
-                                                        <xs:attribute name="destRel" type="xs:string" use="required"/>
-                                                    </xs:complexType>
-                                                </xs:element>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="mapName" type="xs:string" use="required"/>
-                                <xs:attribute name="destDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="srcDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="deleteSrc" type="xs:boolean" use="required"/>
                                 <xs:attribute name="code" type="xs:string" use="required"/>
+                                <xs:attribute name="text" type="xs:string" use="required"/>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
 
-            <xs:element name="Charts" minOccurs="0">
-                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RolePage">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbElement">
+                    <xs:attribute name="pageDefId" type="xs:long" use="required"/>
+                    <xs:attribute name="pageId" type="xs:long" use="required"/>
+                    <xs:attribute name="roleId" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Permission">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbElement">
+                    <xs:attribute name="resId" type="xs:long" use="required"/>
+                    <xs:attribute name="prId" type="xs:long" use="required"/>
+                    <xs:attribute name="actionsSet" type="xs:int" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="HostedFile">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
                     <xs:sequence>
-                        <xs:element name="Chart" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="ChartName" type="xs:string"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:long" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="Description" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="RawData" type="xs:base64Binary"/>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
 
-            <xs:element name="Gauges" minOccurs="0">
-                <xs:complexType>
+                    <xs:attribute name="fileName" type="xs:string" use="required"/>
+                    <xs:attribute name="contentType" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Role">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
                     <xs:sequence>
-                        <xs:element name="Gauge" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="GaugeName" type="xs:string"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="ExpressionB64" type="xs:base64Binary" minOccurs="0"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
+                        <xs:element name="Name" type="xs:string"/>
+                        <xs:element name="Description" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties"/>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
 
-            <xs:element name="Reports" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Report" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="Name" type="xs:string"/>
-                                    <xs:element name="Description" type="xs:string" minOccurs="0"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
-                                    <xs:element name="Columns" type="xs:string"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
+    <xs:complexType name="LegacyReport">
+        <xs:annotation>
+            <xs:documentation>
+                LegacyReport is not defined as a root element because it is not expected to appear.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="Name" type="xs:string"/>
+                    <xs:element name="Description" type="xs:string"/>
+                    <xs:element name="Props" type="Properties" minOccurs="0"/>
+                    <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
+                    <xs:element name="Columns" type="xs:string"/>
+                    <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                </xs:sequence>
 
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDefId" type="xs:string" use="required"/>
-                                <xs:attribute name="reportType" type="xs:string" use="required"/>
-                                <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
-                                <xs:attribute name="fileName" type="xs:string" use="optional"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Templates" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Template" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <!-- These are of type="clone" -->
-
-                                    <xs:element name="CloneRecords" minOccurs="0">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="DataObject" type="DataObjectEl"/>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-
-                                    <!-- These are shared by type="doc" and type="mail" -->
-
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-
-                                    <!-- These are of type="doc" -->
-
-                                    <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
-
-                                    <!-- These are of type="mail" -->
-
-                                    <xs:element name="Subject" type="xs:string" minOccurs="0"/>
-                                    <xs:element name="Body" type="xs:string" minOccurs="0"/>
-
-                                    <!-- These are shared -->
-
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <!-- These are shared -->
-
-                                <xs:attribute name="type" type="xs:string" use="required"/>
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="objDef" type="xs:string" use="required"/>
-                                <xs:attribute name="name" type="xs:string" use="required"/>
-
-                                <!-- These are of type="clone" -->
-
-                                <xs:attribute name="cloneId" type="xs:string" use="optional"/>
-
-                                <!-- These are shared by type="doc" and type="mail" -->
-
-                                <xs:attribute name="contentType" type="xs:string" use="optional"/>
-                                <xs:attribute name="systemName" type="xs:string" use="optional"/>
-
-                                <!-- These are of type="doc" -->
-
-                                <xs:attribute name="fileName" type="xs:string" use="optional"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Events" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Event" type="EventEl"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
-            <xs:element name="Questions" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="Question" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="DisplayLabel" type="xs:string"/>
-                                    <xs:element name="ShortLabel" type="xs:string"/>
-                                    <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="categoryId" type="xs:string" use="required"/>
-                                <xs:attribute name="className" type="xs:string" use="required"/>
-                                <xs:attribute name="isRequired" type="xs:boolean" use="required"/>
-                            </xs:complexType>
-                        </xs:element>
-
-                        <xs:element name="ListItem" type="ListItemEl" minOccurs="0" maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="origId" type="xs:string" use="required"/>
-        <xs:attribute name="objDefName" type="xs:string" use="required"/>
-        <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
-        <xs:attribute name="isAuditable" type="xs:boolean" use="required"/>
-        <xs:attribute name="isViewable" type="xs:boolean" use="required"/>
-        <xs:attribute name="isFlaggable" type="xs:boolean" use="required"/>
-        <xs:attribute name="isDependent" type="xs:boolean" use="required"/>
-        <xs:attribute name="isDeployed" type="xs:boolean" use="required"/>
+                <xs:attribute name="objDefId" type="xs:long" use="required"/>
+                <xs:attribute name="reportType" type="xs:string" use="required"/>
+                <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
+                <xs:attribute name="fileName" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="ListItemEl">
-        <xs:sequence>
-            <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-        </xs:sequence>
+    <xs:element name="WebSite">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="SiteName" type="xs:string"/>
+                        <xs:element name="Stylesheet" type="xs:string"/>
+                        <xs:element name="Props" type="Properties"/>
+                        <xs:element name="Description" type="xs:string"/>
+                        <xs:element name="Header" type="xs:base64Binary" minOccurs="0"/>
+                        <xs:element name="Footer" type="xs:base64Binary" minOccurs="0"/>
+                        <xs:element name="WebPageDefs" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="WebPageDef" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
 
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="origId" type="xs:string" use="required"/>
-        <xs:attribute name="orderNo" type="xs:int" use="required"/>
-        <xs:attribute name="source" type="xs:string" use="required"/>
-        <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="code" type="xs:string" use="optional"/>
-        <xs:attribute name="mainItemId" type="xs:string" use="required"/>
-        <xs:attribute name="isDefault" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isMain" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="DependentDataFieldDef">
+        <xs:annotation>
+            <xs:documentation>
+                DependentDataFieldDef is not defined as a root element because it's an integral part of the
+                DependentDataObjectDefType object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="DisplayLabel" type="xs:string"/>
+                </xs:sequence>
+
+                <xs:attribute name="fieldName" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="DataObjectEl">
-        <xs:sequence>
-            <xs:element name="Field" minOccurs="0"
-                        maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:simpleContent>
-                        <xs:extension base="xs:string">
-                            <xs:attribute name="name" type="xs:string" use="required"/>
-                        </xs:extension>
-                    </xs:simpleContent>
-                </xs:complexType>
-            </xs:element>
+    <xs:complexType name="DependantListView">
+        <xs:annotation>
+            <xs:documentation>
+                DependantListView is not defined as a root element because it's an integral part of the
+                DependentDataObjectDefType object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="ViewName" type="xs:string"/>
+                </xs:sequence>
 
-            <xs:element name="Translations" type="TranslationsEl"
-                        minOccurs="0"/>
-        </xs:sequence>
-
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                <xs:attribute name="orderNo" type="xs:int" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="EventEl">
-        <xs:sequence>
-            <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-            <xs:element name="ConditionB64" type="xs:base64Binary"/>
-            <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-        </xs:sequence>
+    <xs:complexType name="RelationshipDef">
+        <xs:annotation>
+            <xs:documentation>
+                RelationshipDef is not defined as a root element because it's an integral part of the DataObject object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                </xs:sequence>
 
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="origId" type="xs:string" use="required"/>
-        <xs:attribute name="orderNo" type="xs:int" use="required"/>
-        <xs:attribute name="objDef" type="xs:string" use="required"/>
-        <xs:attribute name="configId" type="xs:string" use="required"/>
-        <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="onWhat" type="xs:int" use="required"/>
-        <xs:attribute name="relativeToId" type="xs:string" use="required"/>
-        <xs:attribute name="delay" type="xs:string" use="required"/>
-        <xs:attribute name="templateId" type="xs:string" use="required"/>
-        <xs:attribute name="changeFieldId" type="xs:string" use="required"/>
-        <xs:attribute name="isDeployed" type="xs:boolean" use="required"/>
+                <xs:attribute name="relName" type="xs:string" use="required"/>
+                <xs:attribute name="objDef1" type="xs:string" use="optional"/>
+                <xs:attribute name="objDef2" type="xs:string" use="required"/>
+                <xs:attribute name="singularName1" type="xs:string" use="required"/>
+                <xs:attribute name="pluralName1" type="xs:string" use="required"/>
+                <xs:attribute name="singularName2" type="xs:string" use="required"/>
+                <xs:attribute name="pluralName2" type="xs:string" use="required"/>
+                <xs:attribute name="isMultiple1" type="xs:boolean" use="required"/>
+                <xs:attribute name="isMultiple2" type="xs:boolean" use="required"/>
+                <xs:attribute name="orphanControl1" type="xs:boolean" use="required"/>
+                <xs:attribute name="orphanControl2" type="xs:boolean" use="required"/>
+                <xs:attribute name="cloneRelated1" type="xs:boolean" use="required"/>
+                <xs:attribute name="cloneRelated2" type="xs:boolean" use="required"/>
+                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
+                <xs:attribute name="isPkFk" type="xs:boolean" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="MenusEl">
-        <xs:sequence>
-            <xs:element name="Menu" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
+    <xs:element name="DependentDataObjectDef">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="DependentDataObjectDefType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="DependentDataObjectDefType">
+        <xs:annotation>
+            <xs:documentation>
+                DependentDataObjectDef is defined as a type here because there is a name conflict. In both
+                DependentDefs and DataObjectDefs this object is named DataObjectDef. To be able to store
+                DependentDefs\DataObjectDef separately, the root element DependentDataObjectDef is created which
+                just inherits from this type.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="SingularName" type="xs:string"/>
+                    <xs:element name="PluralName" type="xs:string"/>
+                    <xs:element name="Description" type="xs:string"/>
+
+                    <xs:element name="DataFieldDefs">
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="RbCollection">
+                                    <xs:sequence>
+                                        <xs:element name="DataFieldDef" type="DependentDataFieldDef" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="ListViews" minOccurs="0">
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="RbCollection">
+                                    <xs:sequence>
+                                        <xs:element name="ListView" type="DependantListView" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="RelationshipDefs" minOccurs="0">
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="RbCollection">
+                                    <xs:sequence>
+                                        <xs:element name="RelationshipDef" type="RelationshipDef" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+
+                <xs:attribute name="objDefName" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="DataObjectDef">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="SingularName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="PluralName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="NameTemplate" type="xs:string" minOccurs="0"/>
+                        <xs:element name="Description" type="xs:string" minOccurs="0"/>
+
+                        <xs:element name="DataFieldDefs">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="DataFieldDef" type="DataFieldDef" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="RelationshipDefs">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="RelationshipDef" type="RelationshipDef" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="ListViews">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="ListView" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Actions" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Action" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Statuses" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Status" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Processes" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Process" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Buttons" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Button" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="ConversionMaps" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="ConversionMap" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Charts" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Chart" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Gauges" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Gauge" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Reports" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Report" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Templates" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Template" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Events" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Event"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Questions" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Question" minOccurs="0" maxOccurs="unbounded"/>
+                                            <xs:element ref="ListItem" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefName" type="xs:string" use="required"/>
+                    <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isAuditable" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isViewable" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isFlaggable" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isDependent" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isDeployed" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ConversionMap">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="MapNodes">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="MapNode" minOccurs="0" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:complexContent>
+                                                        <xs:extension base="RbElement">
+                                                            <xs:attribute name="dest" type="xs:string" use="required"/>
+                                                            <xs:attribute name="src" type="xs:string" use="required"/>
+                                                            <xs:attribute name="const" type="xs:string" use="required"/>
+                                                        </xs:extension>
+                                                    </xs:complexContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="CloneNodes" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="CloneNode" minOccurs="0" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:complexContent>
+                                                        <xs:extension base="RbElement">
+                                                            <xs:attribute name="objDef" type="xs:string" use="required"/>
+                                                            <xs:attribute name="srcRel" type="xs:string" use="required"/>
+                                                            <xs:attribute name="destRel" type="xs:string" use="required"/>
+                                                        </xs:extension>
+                                                    </xs:complexContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+
+                    <xs:attribute name="mapName" type="xs:string" use="required"/>
+                    <xs:attribute name="destDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="srcDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="deleteSrc" type="xs:boolean" use="required"/>
+                    <xs:attribute name="code" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Template">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <!-- These are of type="clone" -->
+
+                        <xs:element name="CloneRecords" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="DataObject" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <!-- These are shared by type="doc" and type="mail" -->
+
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+
+                        <!-- These are of type="doc" -->
+
+                        <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
+
+                        <!-- These are of type="mail" -->
+
+                        <xs:element name="Subject" type="xs:string" minOccurs="0"/>
+                        <xs:element name="Body" type="xs:string" minOccurs="0"/>
+
+                        <!-- These are shared -->
+
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <!-- These are shared -->
+
+                    <xs:attribute name="type" type="xs:string" use="required"/>
+                    <xs:attribute name="objDef" type="xs:string" use="required"/>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+
+                    <!-- These are of type="clone" -->
+
+                    <xs:attribute name="cloneId" type="xs:string" use="optional"/>
+
+                    <!-- These are shared by type="doc" and type="mail" -->
+
+                    <xs:attribute name="contentType" type="xs:string" use="optional"/>
+                    <xs:attribute name="systemName" type="xs:string" use="optional"/>
+
+                    <!-- These are of type="doc" -->
+
+                    <xs:attribute name="fileName" type="xs:string" use="optional"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Question">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayLabel" type="xs:string"/>
+                        <xs:element name="ShortLabel" type="xs:string"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="categoryId" type="xs:string" use="required"/>
+                    <xs:attribute name="className" type="xs:string" use="required"/>
+                    <xs:attribute name="isRequired" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Report">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="Name" type="xs:string"/>
+                        <xs:element name="Description" type="xs:string" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
+                        <xs:element name="Columns" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="reportType" type="xs:string" use="required"/>
+                    <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
+                    <xs:attribute name="fileName" type="xs:string" use="optional"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Gauge">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="GaugeName" type="xs:string"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="ExpressionB64" type="xs:base64Binary" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Chart">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="ChartName" type="xs:string"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Button">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="ScriptB64" type="xs:base64Binary"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Process">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+
+                        <xs:element name="Workflow">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="Node" minOccurs="0" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:complexContent>
+                                                        <xs:extension base="RbElement">
+                                                            <xs:attribute name="s" type="xs:string" use="required"/>
+                                                            <xs:attribute name="a" type="xs:string" use="required"/>
+                                                        </xs:extension>
+                                                    </xs:complexContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="defStatusId" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Status">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="SystemName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Action">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="DisplayName" type="xs:string"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="ConditionB64" type="xs:base64Binary" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="actionType" type="xs:string" use="required"/>
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="pageId" type="xs:string" use="required"/>
+                    <xs:attribute name="nextStatusId" type="xs:string" use="required"/>
+                    <xs:attribute name="isGroup" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ListView">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="DependantListView">
+                    <xs:sequence>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Columns" type="xs:string"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="DataFieldDef">
+        <xs:annotation>
+            <xs:documentation>
+                DataFieldDef is not defined as a root element because it's an integral part of the DataObject object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="DependentDataFieldDef">
+                <xs:sequence>
+                    <!-- These are shared -->
+
+                    <xs:element name="Description" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Props" type="Properties" minOccurs="0"/>
+                    <xs:element name="ValidationScriptB64" type="xs:base64Binary" minOccurs="0"/>
+
+                    <!-- These are of select list -->
+
+                    <xs:element name="ListItems" minOccurs="0">
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="RbCollection">
+                                    <xs:sequence>
+                                        <xs:element ref="ListItem" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <!-- These are of shared image -->
+
+                    <xs:element name="ImageData" type="xs:base64Binary" minOccurs="0"/>
+
+                    <!-- These are shared -->
+
+                    <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                </xs:sequence>
+
+                <xs:attribute name="objDef" type="xs:string" use="required"/>
+                <xs:attribute name="columnName" type="xs:string" use="optional"/>
+                <xs:attribute name="groupName" type="xs:string" use="optional"/>
+                <xs:attribute name="dataClassName" type="xs:string" use="required"/>
+                <xs:attribute name="uiClassName" type="xs:string" use="required"/>
+                <xs:attribute name="isRequired" type="xs:boolean" use="required"/>
+                <xs:attribute name="isReadOnly" type="xs:boolean" use="required"/>
+                <xs:attribute name="isTextIndexable" type="xs:boolean" use="required"/>
+                <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
+                <xs:attribute name="isAuditable" type="xs:boolean" use="required"/>
+                <xs:attribute name="hasPermissions" type="xs:boolean" use="required"/>
+                <xs:attribute name="maxLength" type="xs:int" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="ListItem">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="source" type="xs:string" use="required"/>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="code" type="xs:string" use="optional"/>
+                    <xs:attribute name="mainItemId" type="xs:string" use="required"/>
+                    <xs:attribute name="isDefault" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DataObject">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbElement">
+                    <xs:sequence>
+                        <xs:element name="Field" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <!-- TODO: How do we handle this? This should inherit from RbElement, but it must also inherit from xs:string. -->
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute name="name" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="id" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Event">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
+                    <xs:sequence>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="ConditionB64" type="xs:base64Binary"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                    </xs:sequence>
+
+                    <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                    <xs:attribute name="objDef" type="xs:string" use="required"/>
+                    <xs:attribute name="configId" type="xs:string" use="required"/>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="onWhat" type="xs:int" use="required"/>
+                    <xs:attribute name="relativeToId" type="xs:string" use="required"/>
+                    <xs:attribute name="delay" type="xs:string" use="required"/>
+                    <xs:attribute name="templateId" type="xs:string" use="required"/>
+                    <xs:attribute name="changeFieldId" type="xs:string" use="required"/>
+                    <xs:attribute name="isDeployed" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Menu">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
                     <xs:sequence>
                         <xs:element name="DisplayName" type="xs:string"/>
                         <xs:element name="SystemName" type="xs:string" minOccurs="0"/>
                         <xs:element name="Description" type="xs:string" minOccurs="0"/>
-                        <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                        <xs:element name="Menus" type="MenusEl" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                        <xs:element name="Menus" minOccurs="0">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="Menu" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
                     </xs:sequence>
 
-                    <xs:attribute name="id" type="xs:string" use="required"/>
-                    <xs:attribute name="origId" type="xs:string" use="required"/>
                     <xs:attribute name="objDefId" type="xs:string" use="required"/>
                     <xs:attribute name="orderNo" type="xs:int" use="required"/>
                     <xs:attribute name="parentId" type="xs:string" use="required"/>
                     <xs:attribute name="pageDefId" type="xs:string" use="required"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
 
-
-    <xs:complexType name="WebPageDefsEl">
-        <xs:sequence>
-            <xs:element name="WebPageDef" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
+    <xs:element name="WebPageDef">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
                     <xs:sequence>
                         <xs:element name="PageDefName" type="xs:string"/>
                         <xs:element name="JspName" type="xs:string"/>
-                        <xs:element name="Props" type="PropsEl" minOccurs="0"/>
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
 
                         <xs:element name="WebPages">
                             <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="WebPage" type="WebPageEl" minOccurs="0" maxOccurs="unbounded"/>
-                                </xs:sequence>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element ref="WebPage" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
 
-                        <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
                     </xs:sequence>
 
-                    <xs:attribute name="id" type="xs:string" use="required"/>
-                    <xs:attribute name="origId" type="xs:string" use="required"/>
                     <xs:attribute name="isPortal" type="xs:boolean" use="required"/>
                     <xs:attribute name="objDefId" type="xs:string" use="required"/>
                     <xs:attribute name="pageType" type="xs:int" use="required"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
 
-    <xs:complexType name="WebPageEl">
-        <xs:sequence>
-            <xs:element name="PageName" type="xs:string"/>
-            <xs:element name="ScriptOnLoad" type="xs:string" minOccurs="0"/>
-
-            <xs:element name="PageSections">
-                <xs:complexType>
+    <xs:element name="WebPage">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="RbObject">
                     <xs:sequence>
-                        <xs:element name="PageSection" minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="PageName" type="xs:string"/>
+                        <xs:element name="ScriptOnLoad" type="xs:string" minOccurs="0"/>
+
+                        <xs:element name="PageSections">
                             <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="SectionTitle" type="xs:string"/>
-
-                                    <xs:element name="PageCells">
-                                        <xs:complexType>
-                                            <xs:sequence>
-                                                <xs:element name="PageCell" minOccurs="0" maxOccurs="unbounded">
-                                                    <xs:complexType>
-                                                        <xs:sequence>
-                                                            <xs:element name="TextB64" type="xs:string" minOccurs="0"/>
-                                                            <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-                                                        </xs:sequence>
-
-                                                        <xs:attribute name="id" type="xs:string" use="required"/>
-                                                        <xs:attribute name="origId" type="xs:string" use="required"/>
-                                                        <xs:attribute name="sectionId" type="xs:string" use="required"/>
-                                                        <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                                        <xs:attribute name="alignment" type="xs:int" use="required"/>
-                                                        <xs:attribute name="fieldId" type="xs:string" use="required"/>
-                                                        <xs:attribute name="cellClassName" type="xs:string"
-                                                                      use="required"/>
-                                                    </xs:complexType>
-                                                </xs:element>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>
-
-                                    <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-                                </xs:sequence>
-
-                                <xs:attribute name="id" type="xs:string" use="required"/>
-                                <xs:attribute name="origId" type="xs:string" use="required"/>
-                                <xs:attribute name="pageId" type="xs:string" use="required"/>
-                                <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                                <xs:attribute name="borderStyle" type="xs:int" use="required"/>
-                                <xs:attribute name="columns" type="xs:int" use="required"/>
-                                <xs:attribute name="viewTabNo" type="xs:int" use="required"/>
-                                <xs:attribute name="pageColNo" type="xs:int" use="required"/>
-                                <xs:attribute name="isCollapsable" type="xs:boolean" use="required"/>
-                                <xs:attribute name="isDefault" type="xs:boolean" use="required"/>
-                                <xs:attribute name="hideMobile" type="xs:boolean" use="required"/>
-                                <xs:attribute name="doNotSynch" type="xs:boolean" use="required"/>
+                                <xs:complexContent>
+                                    <xs:extension base="RbCollection">
+                                        <xs:sequence>
+                                            <xs:element name="PageSection" type="PageSection" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
+
+                        <xs:element name="Props" type="Properties" minOccurs="0"/>
+                        <xs:element name="Translations" type="Translations" minOccurs="0"/>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
 
-            <xs:element name="Props" type="PropsEl" minOccurs="0"/>
-            <xs:element name="Translations" type="TranslationsEl" minOccurs="0"/>
-        </xs:sequence>
+                    <xs:attribute name="pageDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="isBaseVersion" type="xs:boolean" use="required"/>
+                    <xs:attribute name="isLoginOnly" type="xs:boolean" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
 
-        <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="origId" type="xs:string" use="required"/>
-        <xs:attribute name="pageDefId" type="xs:string" use="required"/>
-        <xs:attribute name="isBaseVersion" type="xs:boolean" use="required"/>
-        <xs:attribute name="isLoginOnly" type="xs:boolean" use="required"/>
+    <xs:complexType name="PageSection">
+        <xs:annotation>
+            <xs:documentation>
+                PageSection is not defined as a root element because it's an integral part of the WebPage object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="SectionTitle" type="xs:string"/>
+
+                    <xs:element name="PageCells">
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="RbCollection">
+                                    <xs:sequence>
+                                        <xs:element name="PageCell" type="PageCell" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="Translations" type="Translations" minOccurs="0"/>
+                </xs:sequence>
+
+                <xs:attribute name="pageId" type="xs:string" use="required"/>
+                <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                <xs:attribute name="borderStyle" type="xs:int" use="required"/>
+                <xs:attribute name="columns" type="xs:int" use="required"/>
+                <xs:attribute name="viewTabNo" type="xs:int" use="required"/>
+                <xs:attribute name="pageColNo" type="xs:int" use="required"/>
+                <xs:attribute name="isCollapsable" type="xs:boolean" use="required"/>
+                <xs:attribute name="isDefault" type="xs:boolean" use="required"/>
+                <xs:attribute name="hideMobile" type="xs:boolean" use="required"/>
+                <xs:attribute name="doNotSynch" type="xs:boolean" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="PropsEl">
-        <xs:sequence>
-            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
-        </xs:sequence>
+    <xs:complexType name="PageCell">
+        <xs:annotation>
+            <xs:documentation>
+                PageCell is not defined as a root element because it's an integral part of the WebPage object.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RbObject">
+                <xs:sequence>
+                    <xs:element name="TextB64" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Props" type="Properties" minOccurs="0"/>
+                </xs:sequence>
+
+                <xs:attribute name="sectionId" type="xs:string" use="required"/>
+                <xs:attribute name="orderNo" type="xs:int" use="required"/>
+                <xs:attribute name="alignment" type="xs:int" use="required"/>
+                <xs:attribute name="fieldId" type="xs:string" use="required"/>
+                <xs:attribute name="cellClassName" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="TranslationsEl">
-        <xs:sequence>
-            <xs:element name="Translation" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="fieldName" type="xs:string" use="required"/>
-                    <xs:attribute name="langCode" type="xs:string" use="required"/>
-                    <xs:attribute name="text" type="xs:string" use="required"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
+    <xs:complexType name="Properties">
+        <xs:complexContent>
+            <xs:extension base="RbElement">
+                <xs:sequence>
+                    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
+
+    <xs:complexType name="Translations">
+        <xs:complexContent>
+            <xs:extension base="RbElement">
+                <xs:sequence>
+                    <xs:element name="Translation" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:attribute name="fieldName" type="xs:string" use="required"/>
+                            <xs:attribute name="langCode" type="xs:string" use="required"/>
+                            <xs:attribute name="text" type="xs:string" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RbObject" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="RbElement">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+                <xs:attribute name="origId" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RbElement" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="RbNode"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RbCollection" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="RbNode"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RbNode" abstract="true"/>
 
 </xs:schema>
