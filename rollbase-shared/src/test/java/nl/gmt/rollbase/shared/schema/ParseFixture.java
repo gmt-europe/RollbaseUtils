@@ -11,10 +11,14 @@ import java.io.*;
 
 @RunWith(JUnit4.class)
 public class ParseFixture {
+    public static InputStream openCrmXml() {
+        return ParseFixture.class.getResourceAsStream("CRM_v2.xml");
+    }
+
     @Test
     public void parse() throws JAXBException {
         Application application = XmlUtils.parse(
-            new StreamSource(new File("/home/gmt/Desktop/CRM_v2.xml")),
+            new StreamSource(openCrmXml()),
             Application.class
         );
 
@@ -24,11 +28,11 @@ public class ParseFixture {
     @Test
     public void save() throws JAXBException, IOException {
         Application application = XmlUtils.parse(
-            new StreamSource(new File("/home/gmt/Desktop/CRM_v2.xml")),
+            new StreamSource(openCrmXml()),
             Application.class
         );
 
-        try (OutputStream os = new FileOutputStream("/home/gmt/Desktop/CRM_v2 (copy).xml")) {
+        try (OutputStream os = new FileOutputStream("CRM_v2 (copy).xml")) {
             XmlUtils.save(os, application, true);
         }
     }

@@ -188,14 +188,17 @@
                         <xs:element name="Lang" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation>
-                                    At least one translation will exist. The
-                                    first translation always is the one of the
+                                    At least one translation will exist. The first translation always is the one of the
                                     base language.
                                 </xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
-                                <xs:attribute name="code" type="xs:string" use="required"/>
-                                <xs:attribute name="text" type="xs:string" use="required"/>
+                                <xs:complexContent>
+                                    <xs:extension base="RbElement">
+                                        <xs:attribute name="code" type="xs:string" use="required"/>
+                                        <xs:attribute name="text" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
