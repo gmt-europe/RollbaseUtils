@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/rollbase-merge/rollbase-merge.iml" filepath="$PROJECT_DIR$/rollbase-merge/rollbase-merge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rollbase-shared/rollbase-shared.iml" filepath="$PROJECT_DIR$/rollbase-shared/rollbase-shared.iml" />
+    </modules>
+  </component>
+</project>
+
