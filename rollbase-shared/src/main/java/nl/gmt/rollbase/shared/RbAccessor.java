@@ -197,4 +197,9 @@ public abstract class RbAccessor implements Opcodes {
             return defineClass(name, bytes, 0, bytes.length);
         }
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

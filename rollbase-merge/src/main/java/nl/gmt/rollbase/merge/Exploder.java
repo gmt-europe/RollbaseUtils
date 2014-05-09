@@ -8,8 +8,6 @@ import org.apache.commons.lang.Validate;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Source;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -21,13 +19,11 @@ import java.util.Stack;
 public class Exploder {
     private static final String INVALID_PATH_CHARS = "\\/:*?\"<>|";
 
-    public void explode(Source source, FileWriter writer) throws MergeException {
-        Validate.notNull(source, "source");
+    public void explode(Application application, FileWriter writer) throws MergeException {
+        Validate.notNull(application, "application");
         Validate.notNull(writer, "writer");
 
         try {
-            Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(source);
-
             new Walker(writer, application).visit(application);
         } catch (Exception e) {
             throw new MergeException("Cannot explode source", e);
@@ -55,7 +51,7 @@ public class Exploder {
 
             // We only explode classes that have XmlRootElement defined.
 
-            if (!shouldExplode(node)) {
+            if (!Utils.isRootClass(node.getClass())) {
                 return;
             }
 
@@ -69,7 +65,7 @@ public class Exploder {
                 for (DependentDataObjectDefType objectDefType : application.getDependentDefs().getDataObjectDef()) {
                     DependentDataObjectDef copy = new DependentDataObjectDef();
 
-                    copy(metaModel, objectDefType, copy);
+                    Utils.copy(metaModel, objectDefType, copy);
 
                     save(
                         copy,
@@ -117,12 +113,6 @@ public class Exploder {
             }
         }
 
-        private void copy(RbMetaModel metaModel, DependentDataObjectDefType source, DependentDataObjectDefType destination) {
-            for (RbAccessor accessor : metaModel.getAccessors()) {
-                accessor.setValue(destination, accessor.getValue(source));
-            }
-        }
-
         private void save(Object node, File fileName) throws IOException, JAXBException {
             String xml;
 
@@ -158,10 +148,6 @@ public class Exploder {
             }
 
             return result;
-        }
-
-        private boolean shouldExplode(RbNode node) {
-            return node.getClass().isAnnotationPresent(XmlRootElement.class);
         }
 
         @Override
@@ -201,7 +187,7 @@ public class Exploder {
                     continue;
                 }
 
-                if (shouldExplode(parent)) {
+                if (Utils.isRootClass(parent.getClass())) {
                     result = new File(result, parent.getClass().getSimpleName());
                     result = new File(result, getNaturalName(parent).getPath());
                 }

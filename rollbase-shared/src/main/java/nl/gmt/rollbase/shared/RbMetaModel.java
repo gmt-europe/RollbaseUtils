@@ -43,7 +43,7 @@ public class RbMetaModel {
 
             if (!getter.getName().startsWith("get") && !getter.getName().startsWith("is")) {
                 throw new RollbaseException(String.format(
-                    "Expected method name '%s' to start with 'get' or 'is'", getter.getName()
+                    "Expected method name '%s' of '%s' to start with 'get' or 'is'", type, getter.getName()
                 ));
             }
 

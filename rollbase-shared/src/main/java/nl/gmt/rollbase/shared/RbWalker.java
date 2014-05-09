@@ -3,8 +3,9 @@ package nl.gmt.rollbase.shared;
 import nl.gmt.rollbase.shared.schema.DataObject;
 import nl.gmt.rollbase.shared.schema.RbNode;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RbWalker implements RbVisitor {
     @Override
@@ -62,19 +63,6 @@ public class RbWalker implements RbVisitor {
 
     protected void visitChild(RbNode parent, RbNode child, RbAccessor accessor) throws Exception {
         visit(child);
-    }
-
-    private Method[] getMethodsSorted(Class<?> type) {
-        Method[] methods = type.getMethods();
-
-        Arrays.sort(methods, new Comparator<Method>() {
-            @Override
-            public int compare(Method a, Method b) {
-                return a.getName().compareTo(b.getName());
-            }
-        });
-
-        return methods;
     }
 
     private boolean isIgnorableType(Class<?> type) {
