@@ -1,12 +1,12 @@
 package nl.gmt.rollbase.shared.schema;
 
-import nl.gmt.rollbase.support.schema.XmlUtils;
+import nl.gmt.rollbase.shared.RollbaseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.bind.Marshaller;
 import java.io.*;
 
 @RunWith(JUnit4.class)
@@ -16,24 +16,22 @@ public class ParseFixture {
     }
 
     @Test
-    public void parse() throws JAXBException {
-        Application application = XmlUtils.parse(
-            new StreamSource(openCrmXml()),
-            Application.class
-        );
+    public void parse() throws JAXBException, RollbaseException {
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(openCrmXml());
 
         System.out.println(application.toString());
     }
 
     @Test
-    public void save() throws JAXBException, IOException {
-        Application application = XmlUtils.parse(
-            new StreamSource(openCrmXml()),
-            Application.class
-        );
+    public void save() throws JAXBException, IOException, RollbaseException {
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(openCrmXml());
 
-        try (OutputStream os = new FileOutputStream("CRM_v2 (copy).xml")) {
-            XmlUtils.save(os, application, true);
+        new File("tmp").mkdirs();
+
+        try (OutputStream os = new FileOutputStream("tmp/CRM_v2 (copy).xml")) {
+            Marshaller marshaller = XmlUtils.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(application, os);
         }
     }
 }

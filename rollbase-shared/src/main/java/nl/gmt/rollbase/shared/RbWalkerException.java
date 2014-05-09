@@ -1,6 +1,6 @@
-package nl.gmt.rollbase.support;
+package nl.gmt.rollbase.shared;
 
-public class RbWalkerException extends RuntimeException {
+public class RbWalkerException extends Exception {
     public RbWalkerException() {
     }
 

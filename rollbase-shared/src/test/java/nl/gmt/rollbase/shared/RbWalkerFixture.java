@@ -1,25 +1,18 @@
 package nl.gmt.rollbase.shared;
 
 import nl.gmt.rollbase.shared.schema.*;
-import nl.gmt.rollbase.support.RbWalker;
-import nl.gmt.rollbase.support.schema.XmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.transform.stream.StreamSource;
 import java.util.*;
 
 @RunWith(JUnit4.class)
 public class RbWalkerFixture {
     @Test
-    public void walk() throws JAXBException {
-        Application application = XmlUtils.parse(
-            new StreamSource(ParseFixture.openCrmXml()),
-            Application.class
-        );
+    public void walk() throws Exception {
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(ParseFixture.openCrmXml());
 
         new PrintWalker().visit(application);
     }
@@ -28,7 +21,7 @@ public class RbWalkerFixture {
         private int indent;
 
         @Override
-        public void visitChildren(RbNode node) {
+        protected void visitChildren(RbNode node) throws Exception {
             indent++;
 
             super.visitChildren(node);
@@ -37,7 +30,7 @@ public class RbWalkerFixture {
         }
 
         @Override
-        public void visit(RbNode node) {
+        public void visit(RbNode node) throws Exception {
             System.out.println(String.format(
                 "%s%s", StringUtils.repeat("  ", indent), node.getClass().getSimpleName()
             ));
@@ -47,11 +40,8 @@ public class RbWalkerFixture {
     }
 
     @Test
-    public void idVisitor() throws JAXBException {
-        Application application = XmlUtils.parse(
-            new StreamSource(ParseFixture.openCrmXml()),
-            Application.class
-        );
+    public void idVisitor() throws Exception {
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(ParseFixture.openCrmXml());
 
         IdWalker idWalker = new IdWalker();
 
@@ -71,7 +61,7 @@ public class RbWalkerFixture {
         private final Set<String> origIds = new HashSet<>();
 
         @Override
-        public void visit(RbNode node) {
+        public void visit(RbNode node) throws Exception {
             if (node instanceof RbObject) {
                 String id = ((RbObject)node).getId();
 

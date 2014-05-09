@@ -1,6 +1,5 @@
 package nl.gmt.rollbase.shared.schema;
 
-import nl.gmt.rollbase.support.schema.XmlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
