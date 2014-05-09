@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang.Validate;
+import org.jboss.logging.Logger;
 
 import java.io.Closeable;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FileWriter implements Closeable {
+    private static final Logger LOG = Logger.getLogger(FileWriter.class);
+
     private final File target;
     private final Set<File> files = new HashSet<>();
 
@@ -34,17 +37,19 @@ public class FileWriter implements Closeable {
 
         target.getParentFile().mkdirs();
 
-        System.out.println("Writing " + target);
-
         // Don't overwrite the current file with the same content.
 
         if (target.exists()) {
             String currentContent = FileUtils.readFileToString(target);
 
             if (currentContent.equals(content)) {
+                LOG.infof("Skipping unchanged file '%s'", target);
+
                 return;
             }
         }
+
+        LOG.infof("Writing '%s'", target);
 
         FileUtils.write(target, content, "UTF-8");
     }
