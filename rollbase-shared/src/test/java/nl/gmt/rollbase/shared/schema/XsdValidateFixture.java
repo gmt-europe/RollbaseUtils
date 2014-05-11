@@ -1,5 +1,6 @@
 package nl.gmt.rollbase.shared.schema;
 
+import nl.gmt.rollbase.shared.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -15,7 +16,7 @@ public class XsdValidateFixture {
     public void validate() throws SAXException, IOException {
 
         try {
-            XmlUtils.validate(new StreamSource(ParseFixture.openCrmXml()));
+            XmlUtils.validate(new StreamSource(TestUtils.openCrmXml()));
             System.out.println("CRM_v2.xml is valid");
         } catch (SAXException e) {
             System.err.println("CRM_v2.xml is NOT valid");

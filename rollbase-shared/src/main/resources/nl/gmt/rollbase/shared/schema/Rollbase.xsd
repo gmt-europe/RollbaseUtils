@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           xmlns:annox="http://annox.dev.java.net"
+           xmlns:rb="http://annox.dev.java.net/nl.gmt.rollbase.shared.schema"
+           jaxb:extensionBindingPrefixes="xjc annox"
+           jaxb:version="2.1">
     <xs:element name="Application">
         <xs:complexType>
             <xs:complexContent>
@@ -200,9 +208,33 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="RbElement">
-                <xs:attribute name="pageDefId" type="xs:long" use="required"/>
-                <xs:attribute name="pageId" type="xs:long" use="required"/>
-                <xs:attribute name="roleId" type="xs:long" use="required"/>
+                <xs:attribute name="pageDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="pageId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="roleId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -228,8 +260,24 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="RbElement">
-                <xs:attribute name="resId" type="xs:long" use="required"/>
-                <xs:attribute name="prId" type="xs:long" use="required"/>
+                <xs:attribute name="resId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="prId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="actionsSet" type="xs:int" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -281,11 +329,27 @@
                     <xs:element name="Description" type="xs:string"/>
                     <xs:element name="Props" type="Properties" minOccurs="0"/>
                     <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
-                    <xs:element name="Columns" type="xs:string"/>
+                    <xs:element name="Columns" type="xs:string">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF_LIST"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="objDefId" type="xs:long" use="required"/>
+                <xs:attribute name="objDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="reportType" type="xs:string" use="required"/>
                 <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
                 <xs:attribute name="fileName" type="xs:string" use="required"/>
@@ -373,8 +437,24 @@
                 </xs:sequence>
 
                 <xs:attribute name="relName" type="xs:string" use="required"/>
-                <xs:attribute name="objDef1" type="xs:string" use="optional"/>
-                <xs:attribute name="objDef2" type="xs:string" use="required"/>
+                <xs:attribute name="objDef1" type="xs:string" use="optional">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF_LIST"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="objDef2" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF_LIST"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="singularName1" type="xs:string" use="required"/>
                 <xs:attribute name="pluralName1" type="xs:string" use="required"/>
                 <xs:attribute name="singularName2" type="xs:string" use="required"/>
@@ -686,7 +766,14 @@
                                                 <xs:complexType>
                                                     <xs:complexContent>
                                                         <xs:extension base="RbElement">
-                                                            <xs:attribute name="objDef" type="xs:string" use="required"/>
+                                                            <xs:attribute name="objDef" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:documentation>
+                                                                        This seems to be the only objDef that is not
+                                                                        a reference to DataObjectDef.id.
+                                                                    </xs:documentation>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
                                                             <xs:attribute name="srcRel" type="xs:string" use="required"/>
                                                             <xs:attribute name="destRel" type="xs:string" use="required"/>
                                                         </xs:extension>
@@ -701,8 +788,24 @@
                     </xs:sequence>
 
                     <xs:attribute name="mapName" type="xs:string" use="required"/>
-                    <xs:attribute name="destDefId" type="xs:string" use="required"/>
-                    <xs:attribute name="srcDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="destDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="srcDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="deleteSrc" type="xs:boolean" use="required"/>
                     <xs:attribute name="code" type="xs:string" use="required"/>
                 </xs:extension>
@@ -750,12 +853,28 @@
                     <!-- These are shared -->
 
                     <xs:attribute name="type" type="xs:string" use="required"/>
-                    <xs:attribute name="objDef" type="xs:string" use="required"/>
+                    <xs:attribute name="objDef" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="name" type="xs:string" use="required"/>
 
                     <!-- These are of type="clone" -->
 
-                    <xs:attribute name="cloneId" type="xs:string" use="optional"/>
+                    <xs:attribute name="cloneId" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
 
                     <!-- These are shared by type="doc" and type="mail" -->
 
@@ -781,7 +900,15 @@
                         <xs:element name="Translations" type="Translations" minOccurs="0"/>
                     </xs:sequence>
 
-                    <xs:attribute name="categoryId" type="xs:string" use="required"/>
+                    <xs:attribute name="categoryId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="className" type="xs:string" use="required"/>
                     <xs:attribute name="isRequired" type="xs:boolean" use="required"/>
                 </xs:extension>
@@ -798,11 +925,27 @@
                         <xs:element name="Description" type="xs:string" minOccurs="0"/>
                         <xs:element name="Props" type="Properties" minOccurs="0"/>
                         <xs:element name="RawData" type="xs:base64Binary" minOccurs="0"/>
-                        <xs:element name="Columns" type="xs:string"/>
+                        <xs:element name="Columns" type="xs:string">
+                            <xs:annotation>
+                                <xs:appinfo>
+                                    <annox:annotate target="getter">
+                                        <rb:RbId type="ID_REF_LIST"/>
+                                    </annox:annotate>
+                                </xs:appinfo>
+                            </xs:annotation>
+                        </xs:element>
                         <xs:element name="Translations" type="Translations" minOccurs="0"/>
                     </xs:sequence>
 
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="reportType" type="xs:string" use="required"/>
                     <xs:attribute name="isPrivate" type="xs:boolean" use="required"/>
                     <xs:attribute name="fileName" type="xs:string" use="optional"/>
@@ -823,7 +966,15 @@
                     </xs:sequence>
 
                     <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -840,7 +991,15 @@
                     </xs:sequence>
 
                     <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                    <xs:attribute name="objDefId" type="xs:long" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -857,7 +1016,15 @@
                         <xs:element name="Props" type="Properties" minOccurs="0"/>
                     </xs:sequence>
 
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -880,8 +1047,24 @@
                                                 <xs:complexType>
                                                     <xs:complexContent>
                                                         <xs:extension base="RbElement">
-                                                            <xs:attribute name="s" type="xs:string" use="required"/>
-                                                            <xs:attribute name="a" type="xs:string" use="required"/>
+                                                            <xs:attribute name="s" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:appinfo>
+                                                                        <annox:annotate target="getter">
+                                                                            <rb:RbId type="ID_REF"/>
+                                                                        </annox:annotate>
+                                                                    </xs:appinfo>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="a" type="xs:string" use="required">
+                                                                <xs:annotation>
+                                                                    <xs:appinfo>
+                                                                        <annox:annotate target="getter">
+                                                                            <rb:RbId type="ID_REF_LIST"/>
+                                                                        </annox:annotate>
+                                                                    </xs:appinfo>
+                                                                </xs:annotation>
+                                                            </xs:attribute>
                                                         </xs:extension>
                                                     </xs:complexContent>
                                                 </xs:complexType>
@@ -893,9 +1076,25 @@
                         </xs:element>
                     </xs:sequence>
 
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                    <xs:attribute name="defStatusId" type="xs:string" use="required"/>
+                    <xs:attribute name="defStatusId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -910,7 +1109,15 @@
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                <xs:attribute name="objDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -926,11 +1133,35 @@
                     <xs:element name="ConditionB64" type="xs:base64Binary" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                <xs:attribute name="objDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="actionType" type="xs:string" use="required"/>
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                <xs:attribute name="pageId" type="xs:string" use="required"/>
-                <xs:attribute name="nextStatusId" type="xs:string" use="required"/>
+                <xs:attribute name="pageId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="nextStatusId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="isGroup" type="xs:boolean" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -943,10 +1174,26 @@
                     <xs:sequence>
                         <xs:element name="Translations" type="Translations" minOccurs="0"/>
                         <xs:element name="Props" type="Properties" minOccurs="0"/>
-                        <xs:element name="Columns" type="xs:string"/>
+                        <xs:element name="Columns" type="xs:string">
+                            <xs:annotation>
+                                <xs:appinfo>
+                                    <annox:annotate target="getter">
+                                        <rb:RbId type="ID_REF_LIST"/>
+                                    </annox:annotate>
+                                </xs:appinfo>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
 
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="isSystem" type="xs:boolean" use="required"/>
                 </xs:extension>
             </xs:complexContent>
@@ -991,7 +1238,15 @@
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="objDef" type="xs:string" use="required"/>
+                <xs:attribute name="objDef" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="columnName" type="xs:string" use="optional"/>
                 <xs:attribute name="groupName" type="xs:string" use="optional"/>
                 <xs:attribute name="dataClassName" type="xs:string" use="required"/>
@@ -1015,10 +1270,26 @@
                 </xs:sequence>
 
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                <xs:attribute name="source" type="xs:string" use="required"/>
+                <xs:attribute name="source" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="name" type="xs:string" use="required"/>
                 <xs:attribute name="code" type="xs:string" use="optional"/>
-                <xs:attribute name="mainItemId" type="xs:string" use="required"/>
+                <xs:attribute name="mainItemId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="isDefault" type="xs:boolean" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -1042,8 +1313,27 @@
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="id" type="xs:string" use="required"/>
-                <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                <xs:attribute name="id" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The ID of a DataObject isn't really an ID, but is treated as an origId.
+                        </xs:documentation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ORIG_ID"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="objDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -1059,14 +1349,52 @@
                     </xs:sequence>
 
                     <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                    <xs:attribute name="objDef" type="xs:string" use="required"/>
-                    <xs:attribute name="configId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDef" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="configId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>
+                                It's unclear whether this is a reference to a RbObject or not.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="name" type="xs:string" use="required"/>
                     <xs:attribute name="onWhat" type="xs:int" use="required"/>
-                    <xs:attribute name="relativeToId" type="xs:string" use="required"/>
-                    <xs:attribute name="delay" type="xs:string" use="required"/>
-                    <xs:attribute name="templateId" type="xs:string" use="required"/>
-                    <xs:attribute name="changeFieldId" type="xs:string" use="required"/>
+                    <xs:attribute name="relativeToId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="delay" type="xs:long" use="required"/>
+                    <xs:attribute name="templateId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="changeFieldId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="isDeployed" type="xs:boolean" use="required"/>
                 </xs:extension>
             </xs:complexContent>
@@ -1107,10 +1435,34 @@
                     </xs:element>
                 </xs:sequence>
 
-                <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                <xs:attribute name="objDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
-                <xs:attribute name="parentId" type="xs:string" use="required"/>
-                <xs:attribute name="pageDefId" type="xs:string" use="required"/>
+                <xs:attribute name="parentId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="pageDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -1140,7 +1492,15 @@
                     </xs:sequence>
 
                     <xs:attribute name="isPortal" type="xs:boolean" use="required"/>
-                    <xs:attribute name="objDefId" type="xs:string" use="required"/>
+                    <xs:attribute name="objDefId" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <annox:annotate target="getter">
+                                    <rb:RbId type="ID_REF"/>
+                                </annox:annotate>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="pageType" type="xs:int" use="required"/>
                 </xs:extension>
             </xs:complexContent>
@@ -1170,7 +1530,15 @@
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="pageDefId" type="xs:string" use="required"/>
+                <xs:attribute name="pageDefId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="isBaseVersion" type="xs:boolean" use="required"/>
                 <xs:attribute name="isLoginOnly" type="xs:boolean" use="required"/>
             </xs:extension>
@@ -1203,7 +1571,15 @@
                     <xs:element name="Translations" type="Translations" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="pageId" type="xs:string" use="required"/>
+                <xs:attribute name="pageId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
                 <xs:attribute name="borderStyle" type="xs:int" use="required"/>
                 <xs:attribute name="columns" type="xs:int" use="required"/>
@@ -1230,10 +1606,26 @@
                     <xs:element name="Props" type="Properties" minOccurs="0"/>
                 </xs:sequence>
 
-                <xs:attribute name="sectionId" type="xs:string" use="required"/>
+                <xs:attribute name="sectionId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="orderNo" type="xs:int" use="required"/>
                 <xs:attribute name="alignment" type="xs:int" use="required"/>
-                <xs:attribute name="fieldId" type="xs:string" use="required"/>
+                <xs:attribute name="fieldId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID_REF"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="cellClassName" type="xs:string" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -1268,8 +1660,24 @@
     <xs:complexType name="RbObject" abstract="true">
         <xs:complexContent>
             <xs:extension base="RbElement">
-                <xs:attribute name="id" type="xs:string" use="required"/>
-                <xs:attribute name="origId" type="xs:string" use="required"/>
+                <xs:attribute name="id" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ID"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="origId" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="getter">
+                                <rb:RbId type="ORIG_ID"/>
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

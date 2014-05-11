@@ -12,7 +12,7 @@ import java.util.*;
 public class RbWalkerFixture {
     @Test
     public void walk() throws Exception {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(ParseFixture.openCrmXml());
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         new PrintWalker().visit(application);
     }
@@ -41,7 +41,7 @@ public class RbWalkerFixture {
 
     @Test
     public void idVisitor() throws Exception {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(ParseFixture.openCrmXml());
+        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         IdWalker idWalker = new IdWalker();
 
@@ -66,13 +66,13 @@ public class RbWalkerFixture {
                 String id = ((RbObject)node).getId();
 
                 if (ids.contains(id)) {
-                    if (!RelationshipDef.class.isInstance(node)) {
+                    //if (!RelationshipDef.class.isInstance(node)) {
                         System.err.println(String.format(
                             "Duplicate id '%s' of type '%s'",
                             id,
                             node.getClass().getName()
                         ));
-                    }
+                    //}
                 } else {
                     ids.add(id);
                 }

@@ -13,6 +13,7 @@
       <list>
         <option value="$PROJECT_DIR$/rollbase-merge/pom.xml" />
         <option value="$PROJECT_DIR$/rollbase-shared/pom.xml" />
+        <option value="$PROJECT_DIR$/rollbase-shared-annotations/pom.xml" />
       </list>
     </option>
   </component>

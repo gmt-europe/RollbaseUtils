@@ -30,6 +30,7 @@ public class RbAccessorFixture {
         assertEquals(7, accessor.getValue(bean));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void notSettableAccessor() throws RollbaseException {
         MyBean bean = new MyBean();

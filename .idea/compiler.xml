@@ -24,11 +24,13 @@
         <processorPath useClasspath="true" />
         <module name="rollbase-merge" />
         <module name="rollbase-shared" />
+        <module name="rollbase-shared-annotations" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="rollbase-merge" target="1.7" />
       <module name="rollbase-shared" target="1.7" />
+      <module name="rollbase-shared-annotations" target="1.7" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

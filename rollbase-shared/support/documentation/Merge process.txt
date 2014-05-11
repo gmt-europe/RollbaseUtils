@@ -1,0 +1,17 @@
+One of the functions of rbmerge is to support branching and merging. To support this, the following steps are taken:
+
+* When an export is exploded, the export is given a GUID to uniquely identify it. This GUID is written to a
+  separate file which also stores the parent GUID;
+* All ID's in the exploded export are rewritten to GUID's. This is done using the following process:
+  - Id's and origId's are made equal. Only the origId's are important and the id's themselves are only used to
+    reference objects. Making them equal does not bother Rollbase, and it allows us to have stable XML files (i.e.
+    the ID's won't change when we move to a different database);
+  - The current GUID of the export is checked. This is used to load the current mapping from a separate file
+    which stores ID mappings;
+  - All ID's that are not yet mapped are mapped to new GUID's;
+  - The new mappings are stored in the separate file under the new GUID of the export;
+* On implode, the GUID's are mapped back using the separate file. When GUID's are encountered that do not appear
+  in the mapping, these are new ID's. These are then given new origId's based on the current highest origId. This
+  again is stored in the separate file using a new on the fly created application version, and needs to be
+  checked in to maintain compatibility with the next merge or import. This means that a merge may involve two
+  commits: one for the merge and one for the updated ID map.

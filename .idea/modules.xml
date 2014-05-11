@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rollbase-merge/rollbase-merge.iml" filepath="$PROJECT_DIR$/rollbase-merge/rollbase-merge.iml" />
       <module fileurl="file://$PROJECT_DIR$/rollbase-shared/rollbase-shared.iml" filepath="$PROJECT_DIR$/rollbase-shared/rollbase-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rollbase-shared-annotations/rollbase-shared-annotations.iml" filepath="$PROJECT_DIR$/rollbase-shared-annotations/rollbase-shared-annotations.iml" />
     </modules>
   </component>
 </project>

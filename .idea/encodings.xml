@@ -3,6 +3,7 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/rollbase-merge" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rollbase-shared" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rollbase-shared-annotations" charset="UTF-8" />
   </component>
 </project>
 
