@@ -4,7 +4,7 @@ import nl.gmt.rollbase.shared.RollbaseException;
 import nl.gmt.rollbase.shared.RollbaseProject;
 import nl.gmt.rollbase.shared.TestUtils;
 import nl.gmt.rollbase.shared.schema.Application;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,7 +26,7 @@ public class RollbaseProjectFixture {
         Application application;
 
         try (InputStream is = TestUtils.openCrmXml()) {
-            application = (Application)XmlUtils.createUnmarshaller().unmarshal(is);
+            application = (Application)SchemaUtils.createUnmarshaller().unmarshal(is);
         }
 
         new RollbaseProject(new File("tmp")).save(application);
@@ -37,7 +37,7 @@ public class RollbaseProjectFixture {
         Application application;
 
         try (InputStream is = TestUtils.openCrmXml()) {
-            application = (Application)XmlUtils.createUnmarshaller().unmarshal(is);
+            application = (Application)SchemaUtils.createUnmarshaller().unmarshal(is);
         }
 
         int expectedVersion = application.getVersion();
@@ -56,7 +56,7 @@ public class RollbaseProjectFixture {
         // And compare. We need to remove the appId property from loaded and reset the application version
         // to be able to do a correct textual compare.
 
-        XmlUtils.removeProperty(loaded.getProps(), UuidRewriter.APP_ID_KEY);
+        SchemaUtils.removeProperty(loaded.getProps(), UuidRewriter.APP_ID_KEY);
         loaded.setVersion(expectedVersion);
 
         String actual = serialize(loaded);
@@ -80,7 +80,7 @@ public class RollbaseProjectFixture {
 
         try (Writer writer = new StringWriter()) {
             JAXBUtils.marshalFormatted(
-                XmlUtils.createMarshaller(),
+                SchemaUtils.createMarshaller(),
                 application,
                 new StreamResult(writer)
             );

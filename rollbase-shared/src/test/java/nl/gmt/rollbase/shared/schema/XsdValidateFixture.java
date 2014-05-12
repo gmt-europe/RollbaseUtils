@@ -16,7 +16,7 @@ public class XsdValidateFixture {
     public void validate() throws SAXException, IOException {
 
         try {
-            XmlUtils.validate(new StreamSource(TestUtils.openCrmXml()));
+            SchemaUtils.validate(new StreamSource(TestUtils.openCrmXml()));
             System.out.println("CRM_v2.xml is valid");
         } catch (SAXException e) {
             System.err.println("CRM_v2.xml is NOT valid");

@@ -12,7 +12,7 @@ import java.util.*;
 public class RbWalkerFixture {
     @Test
     public void walk() throws Exception {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
+        Application application = (Application)SchemaUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         new PrintWalker().visit(application);
     }
@@ -41,7 +41,7 @@ public class RbWalkerFixture {
 
     @Test
     public void idVisitor() throws Exception {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
+        Application application = (Application)SchemaUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         IdWalker idWalker = new IdWalker();
 

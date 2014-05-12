@@ -15,8 +15,8 @@ import javax.xml.validation.SchemaFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class XmlUtils {
-    private XmlUtils() {
+public class MergeSchemaUtils {
+    private MergeSchemaUtils() {
     }
 
     public final static String FILE_NAME = "IdMaps.xml";
@@ -41,7 +41,7 @@ public class XmlUtils {
     public static void validate(Source source) throws SAXException {
         Validate.notNull(source, "source");
 
-        try (InputStream stream = XmlUtils.class.getResourceAsStream("Merge.xsd")) {
+        try (InputStream stream = MergeSchemaUtils.class.getResourceAsStream("Merge.xsd")) {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(new StreamSource(stream));
 

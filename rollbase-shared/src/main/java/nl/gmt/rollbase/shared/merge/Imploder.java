@@ -3,8 +3,9 @@ package nl.gmt.rollbase.shared.merge;
 import nl.gmt.rollbase.shared.RbAccessor;
 import nl.gmt.rollbase.shared.RbMetaModel;
 import nl.gmt.rollbase.shared.RollbaseException;
+import nl.gmt.rollbase.shared.merge.schema.MergeSchemaUtils;
 import nl.gmt.rollbase.shared.schema.*;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -20,7 +21,7 @@ public class Imploder {
     private static final String APPLICATION_FILE_NAME = "Application.xml";
     private static final List<String> IGNORE_FILE_NAMES = Collections.unmodifiableList(Arrays.asList(
         APPLICATION_FILE_NAME,
-        nl.gmt.rollbase.shared.merge.schema.XmlUtils.FILE_NAME
+        MergeSchemaUtils.FILE_NAME
     ));
 
     private static final Logger LOG = Logger.getLogger(Imploder.class);
@@ -153,6 +154,6 @@ public class Imploder {
     private Object load(File file) throws JAXBException {
         LOG.infof("Loading '%s'", file);
 
-        return XmlUtils.createUnmarshaller().unmarshal(file);
+        return SchemaUtils.createUnmarshaller().unmarshal(file);
     }
 }

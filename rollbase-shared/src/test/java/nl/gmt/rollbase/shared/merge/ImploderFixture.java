@@ -3,7 +3,7 @@ package nl.gmt.rollbase.shared.merge;
 import nl.gmt.rollbase.shared.RbIdMode;
 import nl.gmt.rollbase.shared.TestUtils;
 import nl.gmt.rollbase.shared.schema.Application;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,7 +26,7 @@ public class ImploderFixture {
         Application application;
 
         try (InputStream is = TestUtils.openCrmXml()) {
-            application = (Application)XmlUtils.createUnmarshaller().unmarshal(new StreamSource(is));
+            application = (Application)SchemaUtils.createUnmarshaller().unmarshal(new StreamSource(is));
         }
 
         // Re-serialize the application so we have a known starting point.
@@ -57,7 +57,7 @@ public class ImploderFixture {
 
         try (Writer writer = new StringWriter()) {
             JAXBUtils.marshalFormatted(
-                XmlUtils.createMarshaller(),
+                SchemaUtils.createMarshaller(),
                 application,
                 new StreamResult(writer)
             );

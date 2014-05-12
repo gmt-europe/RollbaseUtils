@@ -111,7 +111,7 @@ public class RbObjectMap {
                             break;
 
                         case ID_REF_LIST:
-                            List<String> ids = XmlUtils.parseIdList(node, accessor, idMode);
+                            List<String> ids = SchemaUtils.parseIdList(node, accessor, idMode);
                             if (ids != null) {
                                 for (String id : ids) {
                                     addReference(id, node, accessor, null);
@@ -124,8 +124,8 @@ public class RbObjectMap {
                                 // Sanity check whether there are properties that contain number sequences that appear in
                                 // the ID set. If so, we may be missing an RbIdReference.
 
-                                if (XmlUtils.looksLikeIdList((String)value, idMode)) {
-                                    for (String id : XmlUtils.parseIdList(node, accessor, idMode)) {
+                                if (SchemaUtils.looksLikeIdList((String)value, idMode)) {
+                                    for (String id : SchemaUtils.parseIdList(node, accessor, idMode)) {
                                         if (this.ids.contains(id)) {
                                             LOG.warnf(
                                                 "Property '%s' of element '%s' has a value '%s' that looks like an ID",
@@ -147,11 +147,11 @@ public class RbObjectMap {
         }
 
         private void processProperties(RbNode node, RbAccessor accessor, Properties properties) throws RollbaseException {
-            for (String key : XmlUtils.getPropertyKeys(properties)) {
-                String value = XmlUtils.getProperty(properties, key);
+            for (String key : SchemaUtils.getPropertyKeys(properties)) {
+                String value = SchemaUtils.getProperty(properties, key);
 
-                if (XmlUtils.looksLikeIdList(value, idMode)) {
-                    for (String id : XmlUtils.getIds(value)) {
+                if (SchemaUtils.looksLikeIdList(value, idMode)) {
+                    for (String id : SchemaUtils.getIds(value)) {
                         // There are many many properties that reference ID's. Instead of processing them all and
                         // look whether the contents looks like an ID and we have it in our list.
 

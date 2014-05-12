@@ -5,7 +5,7 @@ import nl.gmt.rollbase.shared.RollbaseException;
 import nl.gmt.rollbase.shared.RollbaseProject;
 import nl.gmt.rollbase.shared.merge.JAXBUtils;
 import nl.gmt.rollbase.shared.schema.Application;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.log4j.Level;
 
 import javax.xml.bind.JAXBException;
@@ -40,7 +40,7 @@ public class App {
 
         try (OutputStream os = new FileOutputStream(arguments.getFile())) {
             JAXBUtils.marshalFormatted(
-                XmlUtils.createMarshaller(),
+                SchemaUtils.createMarshaller(),
                 application,
                 new StreamResult(os)
             );
@@ -48,7 +48,7 @@ public class App {
     }
 
     private static void performSave(Arguments arguments) throws RollbaseException, JAXBException {
-        Application application = (Application)XmlUtils.createUnmarshaller()
+        Application application = (Application)SchemaUtils.createUnmarshaller()
             .unmarshal(new File(arguments.getFile()));
 
         new RollbaseProject(new File(arguments.getProject())).save(application);

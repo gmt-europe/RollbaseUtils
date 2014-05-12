@@ -4,7 +4,7 @@ import nl.gmt.rollbase.shared.*;
 import nl.gmt.rollbase.shared.merge.schema.*;
 import nl.gmt.rollbase.shared.schema.*;
 import nl.gmt.rollbase.shared.schema.Properties;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.lang.Validate;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class UuidAdder extends UuidRewriter {
         // Get the current UUID of the application.
 
         UUID appId = null;
-        String value = XmlUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY);
+        String value = SchemaUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY);
         if (value != null) {
             appId = UUID.fromString(value);
         }
@@ -171,16 +171,16 @@ public class UuidAdder extends UuidRewriter {
         private void mapProperties(RbNode node, RbAccessor accessor) throws RollbaseException {
             Properties properties = (Properties)accessor.getValue(node);
 
-            for (String key : XmlUtils.getPropertyKeys(properties)) {
-                String value = XmlUtils.getProperty(properties, key);
+            for (String key : SchemaUtils.getPropertyKeys(properties)) {
+                String value = SchemaUtils.getProperty(properties, key);
 
                 // Does this look like it could contain an ID?
 
-                if (!XmlUtils.looksLikeIdList(value, RbIdMode.LONG)) {
+                if (!SchemaUtils.looksLikeIdList(value, RbIdMode.LONG)) {
                     continue;
                 }
 
-                List<String> ids = XmlUtils.getIds(value);
+                List<String> ids = SchemaUtils.getIds(value);
 
                 if ("0".equals(value) || "-1".equals(value)) {
                     continue;
@@ -212,7 +212,7 @@ public class UuidAdder extends UuidRewriter {
                     sb.append(map(Long.parseLong(id), false, node).toString());
                 }
 
-                XmlUtils.setProperty(properties, key, sb.toString());
+                SchemaUtils.setProperty(properties, key, sb.toString());
             }
         }
 
@@ -222,7 +222,7 @@ public class UuidAdder extends UuidRewriter {
             // When the parseIdList couldn't parse the ID's, but this is OK (i.e. RelationshipDef for dependant
             // object defs), we don't do anything.
 
-            List<String> ids = XmlUtils.parseIdList(node, accessor, RbIdMode.LONG);
+            List<String> ids = SchemaUtils.parseIdList(node, accessor, RbIdMode.LONG);
             if (ids == null) {
                 return;
             }

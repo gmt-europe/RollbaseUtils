@@ -3,7 +3,7 @@ package nl.gmt.rollbase.shared.merge;
 import nl.gmt.rollbase.shared.RollbaseException;
 import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
 import nl.gmt.rollbase.shared.schema.Application;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.lang.Validate;
 
 import java.util.UUID;
@@ -24,7 +24,7 @@ public abstract class UuidRewriter {
         // Create a new UUID for the application.
 
         UUID newAppId = UUID.randomUUID();
-        XmlUtils.setProperty(application.getProps(), APP_ID_KEY, newAppId.toString());
+        SchemaUtils.setProperty(application.getProps(), APP_ID_KEY, newAppId.toString());
         version.setAppId(newAppId.toString());
 
         // Bump the version.

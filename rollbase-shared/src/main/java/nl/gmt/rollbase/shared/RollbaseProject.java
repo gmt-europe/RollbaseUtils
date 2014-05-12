@@ -3,8 +3,9 @@ package nl.gmt.rollbase.shared;
 import nl.gmt.rollbase.shared.merge.*;
 import nl.gmt.rollbase.shared.merge.FileWriter;
 import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
-import nl.gmt.rollbase.shared.merge.schema.XmlUtils;
+import nl.gmt.rollbase.shared.merge.schema.MergeSchemaUtils;
 import nl.gmt.rollbase.shared.schema.Application;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.lang.Validate;
 
 import javax.xml.bind.JAXBException;
@@ -46,12 +47,12 @@ public class RollbaseProject {
 
             try (Writer writer = new StringWriter()) {
                 JAXBUtils.marshalFormatted(
-                    XmlUtils.createMarshaller(),
+                    MergeSchemaUtils.createMarshaller(),
                     versions,
                     new StreamResult(writer)
                 );
 
-                fileWriter.writeFile(new File(XmlUtils.FILE_NAME), writer.toString());
+                fileWriter.writeFile(new File(MergeSchemaUtils.FILE_NAME), writer.toString());
             }
         } catch (IOException | JAXBException | TransformerException e) {
             throw new RollbaseException("Cannot save project", e);
@@ -78,9 +79,9 @@ public class RollbaseProject {
             // If removing the UUID's generated a new version, we need to update the project. The versions are written
             // as normal, but the application ID also changed. We fix this by hand.
 
-            try (OutputStream os = new FileOutputStream(new File(project, XmlUtils.FILE_NAME))) {
+            try (OutputStream os = new FileOutputStream(new File(project, MergeSchemaUtils.FILE_NAME))) {
                 JAXBUtils.marshalFormatted(
-                    XmlUtils.createMarshaller(),
+                    MergeSchemaUtils.createMarshaller(),
                     versions,
                     new StreamResult(os)
                 );
@@ -92,7 +93,7 @@ public class RollbaseProject {
 
             updateApplicationVersion(
                 application.getVersion(),
-                nl.gmt.rollbase.shared.schema.XmlUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY)
+                SchemaUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY)
             );
         }
 
@@ -103,15 +104,15 @@ public class RollbaseProject {
         try {
             File file = new File(project, "Application.xml");
 
-            Application application = (Application)nl.gmt.rollbase.shared.schema.XmlUtils.createUnmarshaller()
+            Application application = (Application)SchemaUtils.createUnmarshaller()
                 .unmarshal(file);
 
             application.setVersion(version);
-            nl.gmt.rollbase.shared.schema.XmlUtils.setProperty(application.getProps(), UuidRewriter.APP_ID_KEY, appId);
+            SchemaUtils.setProperty(application.getProps(), UuidRewriter.APP_ID_KEY, appId);
 
             try (OutputStream os = new FileOutputStream(file)) {
                 JAXBUtils.marshalFormatted(
-                    nl.gmt.rollbase.shared.schema.XmlUtils.createMarshaller(),
+                    SchemaUtils.createMarshaller(),
                     application,
                     new StreamResult(os)
                 );
@@ -126,14 +127,14 @@ public class RollbaseProject {
     }
 
     private ApplicationVersions loadVersions(boolean throwWhenMissing) throws RollbaseException {
-        File file = new File(project, XmlUtils.FILE_NAME);
+        File file = new File(project, MergeSchemaUtils.FILE_NAME);
 
         if (!throwWhenMissing && !file.exists()) {
             return new ApplicationVersions();
         }
 
         try (InputStream is = new FileInputStream(file)) {
-            return (ApplicationVersions)XmlUtils.createUnmarshaller().unmarshal(is);
+            return (ApplicationVersions)MergeSchemaUtils.createUnmarshaller().unmarshal(is);
         } catch (IOException | JAXBException e) {
             throw new RollbaseException("Cannot load ID map", e);
         }

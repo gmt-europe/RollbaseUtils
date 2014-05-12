@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class XmlUtils {
-    private XmlUtils() {
+public class SchemaUtils {
+    private SchemaUtils() {
     }
 
     private static String buildListRe(String itemRe) {
@@ -56,7 +56,7 @@ public class XmlUtils {
     public static void validate(Source source) throws SAXException {
         Validate.notNull(source, "source");
 
-        try (InputStream stream = XmlUtils.class.getResourceAsStream("Rollbase.xsd")) {
+        try (InputStream stream = SchemaUtils.class.getResourceAsStream("Rollbase.xsd")) {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(new StreamSource(stream));
 

@@ -120,7 +120,7 @@ public class Exploder {
 
             try (StringWriter writer = new StringWriter()) {
                 JAXBUtils.marshalFormatted(
-                    XmlUtils.createMarshaller(),
+                    SchemaUtils.createMarshaller(),
                     node,
                     new StreamResult(writer)
                 );

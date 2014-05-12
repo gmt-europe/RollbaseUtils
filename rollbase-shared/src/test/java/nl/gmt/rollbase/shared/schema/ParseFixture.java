@@ -19,20 +19,20 @@ import java.io.OutputStream;
 public class ParseFixture {
     @Test
     public void parse() throws JAXBException, RollbaseException {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
+        Application application = (Application)SchemaUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         System.out.println(application.toString());
     }
 
     @Test
     public void save() throws JAXBException, IOException, RollbaseException, TransformerException {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
+        Application application = (Application)SchemaUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         new File("tmp").mkdirs();
 
         try (OutputStream os = new FileOutputStream("tmp/CRM_v2 (copy).xml")) {
             JAXBUtils.marshalFormatted(
-                XmlUtils.createMarshaller(),
+                SchemaUtils.createMarshaller(),
                 application,
                 new StreamResult(os)
             );

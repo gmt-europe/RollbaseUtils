@@ -5,7 +5,7 @@ import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
 import nl.gmt.rollbase.shared.schema.Application;
 import nl.gmt.rollbase.shared.schema.Properties;
 import nl.gmt.rollbase.shared.schema.RbNode;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.lang.Validate;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class UuidRemover extends UuidRewriter {
 
         // Get the current UUID of the application.
 
-        String value = XmlUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY);
+        String value = SchemaUtils.getProperty(application.getProps(), UuidRewriter.APP_ID_KEY);
         if (value == null) {
             throw new RollbaseException("Application does not have a UUID associated");
         }
@@ -159,14 +159,14 @@ public class UuidRemover extends UuidRewriter {
         private void mapProperties(RbNode node, RbAccessor accessor) throws RollbaseException {
             Properties properties = (Properties)accessor.getValue(node);
 
-            for (String key : XmlUtils.getPropertyKeys(properties)) {
-                String value = XmlUtils.getProperty(properties, key);
+            for (String key : SchemaUtils.getPropertyKeys(properties)) {
+                String value = SchemaUtils.getProperty(properties, key);
 
                 // Does this look like it could contain an ID and it's not the appId?
 
                 if (
                     APP_ID_KEY.equals(key) ||
-                    !XmlUtils.looksLikeIdList(value, RbIdMode.UUID)
+                    !SchemaUtils.looksLikeIdList(value, RbIdMode.UUID)
                 ) {
                     continue;
                 }
@@ -175,14 +175,14 @@ public class UuidRemover extends UuidRewriter {
 
                 StringBuilder sb = new StringBuilder();
 
-                for (String id : XmlUtils.getIds(value)) {
+                for (String id : SchemaUtils.getIds(value)) {
                     if (sb.length() > 0) {
                         sb.append(',');
                     }
                     sb.append(Long.toString(map(UUID.fromString(id))));
                 }
 
-                XmlUtils.setProperty(properties, key, sb.toString());
+                SchemaUtils.setProperty(properties, key, sb.toString());
             }
         }
 
@@ -192,7 +192,7 @@ public class UuidRemover extends UuidRewriter {
             // When the parseIdList couldn't parse the ID's, but this is OK (i.e. RelationshipDef for dependant
             // object defs), we don't do anything.
 
-            List<String> ids = XmlUtils.parseIdList(node, accessor, RbIdMode.UUID);
+            List<String> ids = SchemaUtils.parseIdList(node, accessor, RbIdMode.UUID);
             if (ids == null) {
                 return;
             }

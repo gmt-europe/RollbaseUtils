@@ -1,7 +1,7 @@
 package nl.gmt.rollbase.shared;
 
 import nl.gmt.rollbase.shared.schema.Application;
-import nl.gmt.rollbase.shared.schema.XmlUtils;
+import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -10,7 +10,7 @@ import org.junit.runners.JUnit4;
 public class RbObjectMapFixture {
     @Test
     public void createObjectMap() throws Exception {
-        Application application = (Application)XmlUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
+        Application application = (Application)SchemaUtils.createUnmarshaller().unmarshal(TestUtils.openCrmXml());
 
         RbObjectMap objectMap = new RbObjectMap(application, RbIdMode.LONG);
     }
