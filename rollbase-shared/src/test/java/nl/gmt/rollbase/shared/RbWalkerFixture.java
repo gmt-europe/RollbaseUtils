@@ -66,13 +66,13 @@ public class RbWalkerFixture {
                 String id = ((RbObject)node).getId();
 
                 if (ids.contains(id)) {
-                    //if (!RelationshipDef.class.isInstance(node)) {
+                    if (!(node instanceof RelationshipDef)) {
                         System.err.println(String.format(
                             "Duplicate id '%s' of type '%s'",
                             id,
                             node.getClass().getName()
                         ));
-                    //}
+                    }
                 } else {
                     ids.add(id);
                 }

@@ -10,7 +10,6 @@ import java.util.*;
 
 public class RbObjectMap {
     private static final Logger LOG = Logger.getLogger(RbObjectMap.class);
-    private static final List<RbReference> EMPTY_REFERENCES = Collections.emptyList();
     private static final Set<String> IGNORE_ID_DETECTION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "Id", "OrigId", "OrderNo", "PageType"
     )));
@@ -18,9 +17,6 @@ public class RbObjectMap {
     private final Application application;
     private final Map<String, RbObject> objects = new HashMap<>();
     private final RbIdMode idMode;
-    //    private final Map<Long, Long> origIds = new HashMap<>();
-    private long maxId = -1;
-    private final Map<String, List<RbReference>> references = new HashMap<>();
 
     public RbObjectMap(Application application, RbIdMode idMode) throws RollbaseException {
         Validate.notNull(application, "application");
@@ -31,20 +27,15 @@ public class RbObjectMap {
 
         try {
             new ObjectWalker().visit(application);
-            new ReferenceWalker(objects.keySet()).visit(application);
+
+            // Verify the ID's. This cross references id references to check that the object actually exists, and
+            // does a sanity check on on the schema where it checks the contents of properties that are not marked
+            // as an RbId but do look like an ID.
+
+            new IdVerifierWalker(objects.keySet()).visit(application);
         } catch (Exception e) {
             throw new RollbaseException("Cannot create object map", e);
         }
-
-        // Change the values of the references map into immutable references.
-
-        for (String id : references.keySet()) {
-            references.put(id, Collections.unmodifiableList(references.get(id)));
-        }
-    }
-
-    public long getMaxId() {
-        return maxId;
     }
 
     public Application getApplication() {
@@ -71,23 +62,16 @@ public class RbObjectMap {
                 }
 
                 objects.put(id, object);
-
-                if (idMode == RbIdMode.LONG) {
-                    long parsedId = Long.parseLong(id);
-                    if (parsedId > maxId) {
-                        maxId = parsedId;
-                    }
-                }
             }
 
             super.visit(node);
         }
     }
 
-    private class ReferenceWalker extends RbWalker {
+    private class IdVerifierWalker extends RbWalker {
         private final Set<String> ids;
 
-        private ReferenceWalker(Set<String> ids) {
+        private IdVerifierWalker(Set<String> ids) {
             this.ids = ids;
         }
 
@@ -98,7 +82,7 @@ public class RbObjectMap {
                     Object value = accessor.getValue(node);
 
                     if (value instanceof Properties) {
-                        processProperties(node, accessor, (Properties)value);
+                        processProperties(node, (Properties)value);
                     }
 
                     if (!(value instanceof String)) {
@@ -107,14 +91,14 @@ public class RbObjectMap {
 
                     switch (accessor.getIdType()) {
                         case ID_REF:
-                            addReference((String)value, node, accessor, null);
+                            verifyId((String)value, node);
                             break;
 
                         case ID_REF_LIST:
                             List<String> ids = SchemaUtils.parseIdList(node, accessor, idMode);
                             if (ids != null) {
                                 for (String id : ids) {
-                                    addReference(id, node, accessor, null);
+                                    verifyId(id, node);
                                 }
                             }
                             break;
@@ -146,7 +130,7 @@ public class RbObjectMap {
             super.visit(node);
         }
 
-        private void processProperties(RbNode node, RbAccessor accessor, Properties properties) throws RollbaseException {
+        private void processProperties(RbNode node, Properties properties) throws RollbaseException {
             for (String key : SchemaUtils.getPropertyKeys(properties)) {
                 String value = SchemaUtils.getProperty(properties, key);
 
@@ -156,14 +140,14 @@ public class RbObjectMap {
                         // look whether the contents looks like an ID and we have it in our list.
 
                         if (this.ids.contains(id)) {
-                            addReference(id, node, accessor, key);
+                            verifyId(id, node);
                         }
                     }
                 }
             }
         }
 
-        private void addReference(String id, RbNode node, RbAccessor accessor, String key) throws RollbaseException {
+        private void verifyId(String id, RbNode node) throws RollbaseException {
             if (idMode == RbIdMode.LONG) {
                 if (Long.parseLong(id) <= 0) {
                     return;
@@ -187,15 +171,6 @@ public class RbObjectMap {
                     node.getClass().getName()
                 ));
             }
-
-            List<RbReference> references = RbObjectMap.this.references.get(id);
-
-            if (references == null) {
-                references = new ArrayList<>();
-                RbObjectMap.this.references.put(id, references);
-            }
-
-            references.add(new RbReference(id, (RbElement)node, accessor, key));
         }
     }
 }
