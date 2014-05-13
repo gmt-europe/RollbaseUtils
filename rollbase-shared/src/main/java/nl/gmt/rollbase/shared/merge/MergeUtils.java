@@ -54,7 +54,7 @@ class MergeUtils {
         }
     }
 
-    private static RbNodeHelper getHelper(Class<? extends RbNode> type) {
+    public static RbNodeHelper getHelper(Class<? extends RbNode> type) {
         return HELPERS.get(type);
     }
 
@@ -73,10 +73,6 @@ class MergeUtils {
 
     public static boolean isRootClass(Class<?> type) {
         return type.isAnnotationPresent(XmlRootElement.class);
-    }
-
-    private static interface RbNodeHelper<T extends RbNode> {
-        String getNaturalName(T node);
     }
 
     private static class DefaultNodeHelper<T extends RbNode> implements RbNodeHelper<T> {

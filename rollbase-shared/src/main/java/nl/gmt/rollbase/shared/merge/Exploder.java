@@ -2,7 +2,9 @@ package nl.gmt.rollbase.shared.merge;
 
 import nl.gmt.rollbase.shared.*;
 import nl.gmt.rollbase.shared.schema.*;
+import nl.gmt.rollbase.shared.schema.Properties;
 import org.apache.commons.lang.Validate;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
@@ -10,10 +12,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-import java.util.UUID;
+import java.util.*;
 
 public class Exploder {
     private static final String INVALID_PATH_CHARS = "\\/:*?\"<>|";
@@ -23,19 +22,20 @@ public class Exploder {
         Validate.notNull(writer, "writer");
 
         try {
-            new Walker(writer, application, idMode).visit(application);
+            new SanitizationWalker().visit(application);
+            new ExploderWalker(writer, application, idMode).visit(application);
         } catch (Exception e) {
             throw new RollbaseException("Cannot explode source", e);
         }
     }
 
-    private static class Walker extends RbWalker {
+    private static class ExploderWalker extends RbWalker {
         private final FileWriter writer;
         private final RbIdMode idMode;
         private final Stack<Level> levels = new Stack<>();
         private final RbObjectMap objectMap;
 
-        private Walker(FileWriter writer, Application application, RbIdMode idMode) throws RollbaseException {
+        private ExploderWalker(FileWriter writer, Application application, RbIdMode idMode) throws RollbaseException {
             this.writer = writer;
             this.idMode = idMode;
 
@@ -281,6 +281,95 @@ public class Exploder {
 
                 list.remove(index);
             }
+        }
+    }
+
+    private static class SanitizationWalker extends RbWalker {
+        @Override
+        public void visit(RbNode node) throws Exception {
+            super.visit(node);
+
+            RbMetaModel metaModel = RbMetaModel.getMetaModel(node.getClass());
+            RbAccessor propertiesAccessor = metaModel.getAccessor("Props");
+
+            if (propertiesAccessor != null) {
+                Properties properties = (Properties)propertiesAccessor.getValue(node);
+
+                // These properties are set here because they are set by an import. They do not appear in an export
+                // of an application, but because they are set during an import, they will appear in an export after
+                // an application has been imported. To make the exploded files more stable, we add them here.
+
+                boolean hasIsManaged = metaModel.getKnownProperties().contains("isManaged");
+                boolean hasDefProcess = metaModel.getKnownProperties().contains("defProcess");
+
+                if ((hasIsManaged || hasDefProcess) && properties == null) {
+                    properties = new Properties();
+                    propertiesAccessor.setValue(node, properties);
+                }
+
+                if (hasIsManaged) {
+                    setDefaultProperty(properties, "isManaged", node instanceof Application ? "0" : "false");
+                }
+                if (hasDefProcess) {
+                    setDefaultProperty(properties, "defProcess", "-1");
+                }
+
+                // Exported properties do not have a deterministic order. Sort them here to make the export more
+                // stable.
+
+                if (properties != null) {
+                    sortProperties(properties);
+                }
+            }
+        }
+
+        private void setDefaultProperty(Properties properties, String key, String value) throws RollbaseException {
+            if (SchemaUtils.getProperty(properties, key) == null) {
+                SchemaUtils.setProperty(properties, key, value);
+            }
+        }
+
+        private void sortProperties(Properties properties) {
+            Collections.sort(properties.getAny(), new Comparator<Object>() {
+                @Override
+                public int compare(Object a, Object b) {
+                    return ((Element)a).getTagName().compareToIgnoreCase(((Element)b).getTagName());
+                }
+            });
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void visitList(RbNode parent, List list, RbAccessor accessor) throws Exception {
+            // Sort lists that we can sort. The first sort level is the natural name. If the object doesn't specify a
+            // natural name or it doesn't make the order unique, we fall back to the ID of the object.
+
+            if (list.size() > 0) {
+                Object firstObject = list.get(0);
+                final RbNodeHelper helper = MergeUtils.getHelper((Class<? extends RbNode>)firstObject.getClass());
+
+                if (helper != null || firstObject instanceof RbObject) {
+                    Collections.sort(list, new Comparator() {
+                        @SuppressWarnings("unchecked")
+                        @Override
+                        public int compare(Object a, Object b) {
+                            int result = 0;
+
+                            if (helper != null) {
+                                result = helper.getNaturalName((RbNode)a).compareToIgnoreCase(helper.getNaturalName((RbNode)b));
+                            }
+
+                            if (result == 0 && a instanceof RbObject) {
+                                result = ((RbObject)a).getId().compareToIgnoreCase(((RbObject)b).getId());
+                            }
+
+                            return result;
+                        }
+                    });
+                }
+            }
+
+            super.visitList(parent, list, accessor);
         }
     }
 }

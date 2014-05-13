@@ -1,5 +1,6 @@
 package nl.gmt.rollbase.shared;
 
+import nl.gmt.rollbase.shared.schema.RbKnownProperties;
 import nl.gmt.rollbase.shared.schema.RbNode;
 import org.apache.commons.lang.Validate;
 
@@ -12,6 +13,7 @@ public class RbMetaModel {
 
     private final Class<?> type;
     private final Map<String, RbAccessor> accessors = new HashMap<>();
+    private final Set<String> knownProperties;
 
     public static RbMetaModel getMetaModel(Class<?> type) throws RollbaseException {
         Validate.notNull(type, "type");
@@ -30,8 +32,19 @@ public class RbMetaModel {
 
     private RbMetaModel(Class<?> type) throws RollbaseException {
         this.type = type;
+        this.knownProperties = getKnownProperties(type);
 
         createAccessors();
+    }
+
+    private Set<String> getKnownProperties(Class<?> type) {
+        RbKnownProperties annotation = type.getAnnotation(RbKnownProperties.class);
+
+        if (annotation == null) {
+            return Collections.emptySet();
+        }
+
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(annotation.value())));
     }
 
     private void createAccessors() throws RollbaseException {
@@ -86,6 +99,10 @@ public class RbMetaModel {
         Validate.notNull(property, "property");
 
         return accessors.get(property);
+    }
+
+    public Set<String> getKnownProperties() {
+        return knownProperties;
     }
 
     public Object getValue(String property, RbNode parent) {

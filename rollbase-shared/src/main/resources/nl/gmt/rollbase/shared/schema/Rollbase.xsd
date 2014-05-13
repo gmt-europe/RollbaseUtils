@@ -9,6 +9,13 @@
            jaxb:version="2.1">
     <xs:element name="Application">
         <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate>
+                        <rb:RbKnownProperties value="isManaged"/>
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
             <xs:complexContent>
                 <xs:extension base="RbObject">
                     <xs:sequence>
@@ -358,6 +365,13 @@
 
     <xs:element name="WebSite">
         <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate>
+                        <rb:RbKnownProperties value="isManaged"/>
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
             <xs:complexContent>
                 <xs:extension base="RbObject">
                     <xs:sequence>
@@ -538,6 +552,13 @@
 
     <xs:element name="DataObjectDef">
         <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate>
+                        <rb:RbKnownProperties value="isManaged defProcess"/>
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
             <xs:complexContent>
                 <xs:extension base="RbObject">
                     <xs:sequence>
@@ -1468,6 +1489,13 @@
 
     <xs:element name="WebPageDef">
         <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate>
+                        <rb:RbKnownProperties value="isManaged"/>
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
             <xs:complexContent>
                 <xs:extension base="RbObject">
                     <xs:sequence>
