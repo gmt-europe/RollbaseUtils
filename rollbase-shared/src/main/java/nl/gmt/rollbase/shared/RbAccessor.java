@@ -22,6 +22,7 @@ public abstract class RbAccessor {
     private final RbIdType idType;
     private final String name;
 
+    @SuppressWarnings("WeakerAccess")
     protected RbAccessor(String name, Class<?> type, boolean settable, RbIdType idType) {
         Validate.notNull(name, "name");
         Validate.notNull(type, "type");

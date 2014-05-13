@@ -41,7 +41,7 @@ public class Arguments {
         return verbosity;
     }
 
-    private ArgumentsException unexpectedArgument(String arg) throws ArgumentsException {
+    private ArgumentsException unexpectedArgument(String arg) {
         return new ArgumentsException(String.format("Unexpected argument '%s'", arg));
     }
 

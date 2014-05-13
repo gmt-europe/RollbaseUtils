@@ -3,7 +3,6 @@ package nl.gmt.rollbase.shared;
 import nl.gmt.rollbase.shared.schema.RbNode;
 import org.apache.commons.lang.Validate;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -89,11 +88,11 @@ public class RbMetaModel {
         return accessors.get(property);
     }
 
-    public Object getValue(String property, RbNode parent) throws InvocationTargetException, IllegalAccessException {
+    public Object getValue(String property, RbNode parent) {
         return getAccessor(property).getValue(parent);
     }
 
-    public void setValue(String property, RbNode parent, Object value) throws InvocationTargetException, IllegalAccessException {
+    public void setValue(String property, RbNode parent, Object value) {
         getAccessor(property).setValue(parent, value);
     }
 }

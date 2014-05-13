@@ -53,7 +53,7 @@ public class SchemaUtils {
         return CONTEXT.createUnmarshaller();
     }
 
-    public static void validate(Source source) throws SAXException {
+    public static void validate(Source source) throws SAXException, IOException {
         Validate.notNull(source, "source");
 
         try (InputStream stream = SchemaUtils.class.getResourceAsStream("Rollbase.xsd")) {
@@ -61,8 +61,6 @@ public class SchemaUtils {
             Schema schema = schemaFactory.newSchema(new StreamSource(stream));
 
             schema.newValidator().validate(source);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

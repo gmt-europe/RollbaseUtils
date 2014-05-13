@@ -116,12 +116,8 @@ public class RollbaseProject {
                     application,
                     new StreamResult(os)
                 );
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            } catch (TransformerException e) {
-                e.printStackTrace();
             }
-        } catch (IOException | JAXBException e) {
+        } catch (IOException | JAXBException | TransformerException e) {
             throw new RollbaseException("Cannot update application", e);
         }
     }

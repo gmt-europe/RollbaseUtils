@@ -54,7 +54,7 @@ class MergeUtils {
         }
     }
 
-    public static RbNodeHelper getHelper(Class<?> type) {
+    private static RbNodeHelper getHelper(Class<? extends RbNode> type) {
         return HELPERS.get(type);
     }
 
@@ -135,7 +135,7 @@ class MergeUtils {
         @Override
         protected void visitList(RbNode parent, List list, RbAccessor accessor) throws Exception {
             if (list.size() > 0) {
-                final RbNodeHelper helper = MergeUtils.getHelper(list.get(0).getClass());
+                final RbNodeHelper helper = MergeUtils.getHelper((Class<? extends RbNode>)list.get(0).getClass());
 
                 if (helper != null) {
                     Collections.sort(list, new Comparator() {

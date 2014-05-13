@@ -38,7 +38,7 @@ public class MergeSchemaUtils {
         return CONTEXT.createUnmarshaller();
     }
 
-    public static void validate(Source source) throws SAXException {
+    public static void validate(Source source) throws SAXException, IOException {
         Validate.notNull(source, "source");
 
         try (InputStream stream = MergeSchemaUtils.class.getResourceAsStream("Merge.xsd")) {
@@ -46,8 +46,6 @@ public class MergeSchemaUtils {
             Schema schema = schemaFactory.newSchema(new StreamSource(stream));
 
             schema.newValidator().validate(source);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

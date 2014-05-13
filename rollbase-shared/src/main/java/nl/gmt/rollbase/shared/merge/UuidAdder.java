@@ -60,7 +60,7 @@ public class UuidAdder extends UuidRewriter {
             return false;
         }
 
-        ApplicationVersions.Version version = bumpVersion(application, appId);
+        ApplicationVersion version = bumpVersion(application, appId);
 
         // Write the mapped ID's.
 
@@ -75,12 +75,12 @@ public class UuidAdder extends UuidRewriter {
         return true;
     }
 
-    private ApplicationVersions.Version.Ids buildIdMap(Map<Long, UUID> ids) {
-        ApplicationVersions.Version.Ids idMap = new ApplicationVersions.Version.Ids();
-        List<ApplicationVersions.Version.Ids.Id> mappedIds = idMap.getId();
+    private IdMap buildIdMap(Map<Long, UUID> ids) {
+        IdMap idMap = new IdMap();
+        List<IdMap.Id> mappedIds = idMap.getId();
 
         for (Map.Entry<Long, UUID> entry : ids.entrySet()) {
-            ApplicationVersions.Version.Ids.Id mappedId = new ApplicationVersions.Version.Ids.Id();
+            IdMap.Id mappedId = new IdMap.Id();
 
             mappedId.setId(entry.getKey());
             mappedId.setMapped(entry.getValue().toString());
@@ -88,9 +88,9 @@ public class UuidAdder extends UuidRewriter {
             mappedIds.add(mappedId);
         }
 
-        Collections.sort(mappedIds, new Comparator<ApplicationVersions.Version.Ids.Id>() {
+        Collections.sort(mappedIds, new Comparator<IdMap.Id>() {
             @Override
-            public int compare(ApplicationVersions.Version.Ids.Id a, ApplicationVersions.Version.Ids.Id b) {
+            public int compare(IdMap.Id a, IdMap.Id b) {
                 return Long.compare(
                     a.getId(),
                     b.getId()
@@ -101,7 +101,7 @@ public class UuidAdder extends UuidRewriter {
         return idMap;
     }
 
-    public static Map<Long, UUID> loadMappedIds(List<RbMappedId> mappedIds) throws RollbaseException {
+    private static Map<Long, UUID> loadMappedIds(List<RbMappedId> mappedIds) throws RollbaseException {
         Map<Long, UUID> map = new HashMap<>();
 
         for (RbMappedId mappedId : mappedIds) {

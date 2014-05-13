@@ -29,9 +29,12 @@ public class App {
                 case LOAD: performLoad(arguments); break;
                 case SAVE: performSave(arguments); break;
             }
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
+        } catch (ArgumentsException e) {
+            System.err.println("Invalid arguments: " + e.getLocalizedMessage());
             System.exit(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(2);
         }
     }
 

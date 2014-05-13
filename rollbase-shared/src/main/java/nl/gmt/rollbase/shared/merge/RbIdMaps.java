@@ -1,5 +1,6 @@
 package nl.gmt.rollbase.shared.merge;
 
+import nl.gmt.rollbase.shared.merge.schema.ApplicationVersion;
 import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
 import org.apache.commons.lang.Validate;
 
@@ -13,7 +14,7 @@ public class RbIdMaps {
 
         List<RbIdMap> idMaps = new ArrayList<>();
 
-        for (ApplicationVersions.Version version : schema.getVersion()) {
+        for (ApplicationVersion version : schema.getVersion()) {
             idMaps.add(RbIdMap.fromSchema(version));
         }
 

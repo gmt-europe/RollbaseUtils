@@ -1,7 +1,7 @@
 package nl.gmt.rollbase.shared.merge;
 
 import nl.gmt.rollbase.shared.RollbaseException;
-import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
+import nl.gmt.rollbase.shared.merge.schema.ApplicationVersion;
 import nl.gmt.rollbase.shared.schema.Application;
 import nl.gmt.rollbase.shared.schema.SchemaUtils;
 import org.apache.commons.lang.Validate;
@@ -9,13 +9,13 @@ import org.apache.commons.lang.Validate;
 import java.util.UUID;
 
 public abstract class UuidRewriter {
-    public static final String PROPERTY_PREFIX = "__rbmerge__";
+    private static final String PROPERTY_PREFIX = "__rbmerge__";
     public static final String APP_ID_KEY = PROPERTY_PREFIX + "appId";
-    public static final UUID ZERO_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-    public static final UUID MIN_ONE_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    static final UUID ZERO_ID = new UUID(0, 0);
+    static final UUID MIN_ONE_ID = new UUID(0, -1);
 
-    ApplicationVersions.Version bumpVersion(Application application, UUID appId) throws RollbaseException {
-        ApplicationVersions.Version version = new ApplicationVersions.Version();
+    ApplicationVersion bumpVersion(Application application, UUID appId) throws RollbaseException {
+        ApplicationVersion version = new ApplicationVersion();
 
         if (appId != null) {
             version.setParentAppId(appId.toString());
@@ -31,7 +31,6 @@ public abstract class UuidRewriter {
 
         int appVersion = application.getVersion() + 1;
         application.setVersion(appVersion);
-        version.setAppVersion(appVersion);
         return version;
     }
 

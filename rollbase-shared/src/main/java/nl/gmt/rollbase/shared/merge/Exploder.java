@@ -10,7 +10,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -233,7 +232,7 @@ public class Exploder {
         private static interface Level {
             RbNode getParent();
 
-            void remove(RbNode node) throws InvocationTargetException, IllegalAccessException, RollbaseException;
+            void remove(RbNode node) throws RollbaseException;
         }
 
         private static class ChildLevel implements Level {
@@ -250,7 +249,7 @@ public class Exploder {
             }
 
             @Override
-            public void remove(RbNode node) throws InvocationTargetException, IllegalAccessException, RollbaseException {
+            public void remove(RbNode node) throws RollbaseException {
                 if (accessor.getValue(parent) != node) {
                     throw new RollbaseException("Expected current value of property to be equal to the node");
                 }
@@ -273,7 +272,7 @@ public class Exploder {
             }
 
             @Override
-            public void remove(RbNode node) throws InvocationTargetException, IllegalAccessException, RollbaseException {
+            public void remove(RbNode node) throws RollbaseException {
                 int index = list.indexOf(node);
 
                 if (index == -1) {

@@ -1,6 +1,7 @@
 package nl.gmt.rollbase.shared.merge;
 
-import nl.gmt.rollbase.shared.merge.schema.ApplicationVersions;
+import nl.gmt.rollbase.shared.merge.schema.ApplicationVersion;
+import nl.gmt.rollbase.shared.merge.schema.IdMap;
 import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
@@ -11,10 +12,9 @@ import java.util.UUID;
 public class RbIdMap {
     private final UUID appId;
     private final UUID parentAppId;
-    private final int appVersion;
     private final List<RbMappedId> mappedIds;
 
-    static RbIdMap fromSchema(ApplicationVersions.Version version) {
+    static RbIdMap fromSchema(ApplicationVersion version) {
         Validate.notNull(version, "version");
 
         UUID appId = UUID.fromString(version.getAppId());
@@ -22,16 +22,15 @@ public class RbIdMap {
         if (version.getParentAppId() != null) {
             parentAppId = UUID.fromString(version.getParentAppId());
         }
-        int appVersion = version.getAppVersion();
 
         List<RbMappedId> mappedIds = new ArrayList<>();
         parseMappedIds(version.getIds(), mappedIds);
 
-        return new RbIdMap(appId, parentAppId, appVersion, mappedIds);
+        return new RbIdMap(appId, parentAppId, mappedIds);
     }
 
-    private static void parseMappedIds(ApplicationVersions.Version.Ids ids, List<RbMappedId> mappedIds) {
-        for (ApplicationVersions.Version.Ids.Id id : ids.getId()) {
+    private static void parseMappedIds(IdMap ids, List<RbMappedId> mappedIds) {
+        for (IdMap.Id id : ids.getId()) {
             mappedIds.add(new RbMappedId(
                 id.getId(),
                 UUID.fromString(id.getMapped())
@@ -39,13 +38,12 @@ public class RbIdMap {
         }
     }
 
-    private RbIdMap(UUID appId, UUID parentAppId, int appVersion, List<RbMappedId> mappedIds) {
+    private RbIdMap(UUID appId, UUID parentAppId, List<RbMappedId> mappedIds) {
         Validate.notNull(appId, "appId");
         Validate.notNull(mappedIds, "mappedIds");
 
         this.appId = appId;
         this.parentAppId = parentAppId;
-        this.appVersion = appVersion;
         this.mappedIds = Collections.unmodifiableList(mappedIds);
     }
 
@@ -55,10 +53,6 @@ public class RbIdMap {
 
     public UUID getParentAppId() {
         return parentAppId;
-    }
-
-    public int getAppVersion() {
-        return appVersion;
     }
 
     public List<RbMappedId> getMappedIds() {

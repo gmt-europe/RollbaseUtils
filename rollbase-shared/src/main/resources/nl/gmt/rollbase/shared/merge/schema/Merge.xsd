@@ -7,29 +7,28 @@
     <xs:element name="ApplicationVersions">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Version" minOccurs="0" maxOccurs="unbounded">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Ids">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Id" minOccurs="0" maxOccurs="unbounded">
-                                            <xs:complexType>
-                                                <xs:attribute name="id" type="xs:long" use="required"/>
-                                                <xs:attribute name="mapped" type="xs:string" use="required"/>
-                                            </xs:complexType>
-                                        </xs:element>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-
-                        <xs:attribute name="appVersion" type="xs:int" use="required"/>
-                        <xs:attribute name="appId" type="xs:string" use="required"/>
-                        <xs:attribute name="parentAppId" type="xs:string" use="optional"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="Version" type="ApplicationVersion" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:complexType name="ApplicationVersion">
+        <xs:sequence>
+            <xs:element name="Ids" type="IdMap"/>
+        </xs:sequence>
+
+        <xs:attribute name="appId" type="xs:string" use="required"/>
+        <xs:attribute name="parentAppId" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="IdMap">
+        <xs:sequence>
+            <xs:element name="Id" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                    <xs:attribute name="mapped" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

@@ -24,11 +24,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>nl.gmt.rollbase</groupId>
-            <artifactId>rollbase-shared-annotations</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
@@ -93,15 +88,9 @@
                         <configuration>
                             <extension>true</extension>
                             <args>
-                                <arg>-Xinheritance</arg>
                                 <arg>-Xannotate</arg>
                             </args>
                             <plugins>
-                                <plugin>
-                                    <groupId>org.jvnet.jaxb2_commons</groupId>
-                                    <artifactId>jaxb2-basics</artifactId>
-                                    <version>0.6.5</version>
-                                </plugin>
                                 <plugin>
                                     <groupId>org.jvnet.jaxb2_commons</groupId>
                                     <artifactId>jaxb2-basics-annotate</artifactId>

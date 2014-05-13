@@ -3,10 +3,9 @@
            elementFormDefault="qualified"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
            xmlns:annox="http://annox.dev.java.net"
            xmlns:rb="http://annox.dev.java.net/nl.gmt.rollbase.shared.schema"
-           jaxb:extensionBindingPrefixes="xjc annox"
+           jaxb:extensionBindingPrefixes="annox"
            jaxb:version="2.1">
     <xs:element name="Application">
         <xs:complexType>
