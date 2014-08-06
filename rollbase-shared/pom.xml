@@ -97,6 +97,7 @@
                                     <version>0.6.4</version>
                                 </plugin>
                             </plugins>
+                            <forceRegenerate>true</forceRegenerate>
                             <schemaDirectory>src/main/resources/nl/gmt/rollbase/shared/schema</schemaDirectory>
                             <generatePackage>nl.gmt.rollbase.shared.schema</generatePackage>
                         </configuration>
@@ -107,6 +108,7 @@
                     <execution>
                         <id>generate-merge-schema</id>
                         <configuration>
+                            <forceRegenerate>true</forceRegenerate>
                             <schemaDirectory>src/main/resources/nl/gmt/rollbase/shared/merge/schema</schemaDirectory>
                             <generatePackage>nl.gmt.rollbase.shared.merge.schema</generatePackage>
                         </configuration>
