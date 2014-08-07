@@ -241,7 +241,11 @@ public class UuidAdder extends UuidRewriter {
         }
 
         private void map(RbNode node, RbAccessor accessor, boolean isOrig) throws RollbaseException {
-            long id = Long.parseLong((String)accessor.getValue(node));
+            String value = (String)accessor.getValue(node);
+            if (value == null) {
+                throw new RollbaseException(String.format("Attribute '%s' of node type '%s' is not set", accessor.getName(), node.getClass().getSimpleName()));
+            }
+            long id = Long.parseLong(value);
             UUID mapped = map(id, isOrig, node);
 
             accessor.setValue(node, mapped.toString());
