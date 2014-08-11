@@ -145,7 +145,13 @@ public class UuidAdder extends UuidRewriter {
             // Walk over all properties and rewrite as appropriate.
 
             for (RbAccessor accessor : RbMetaModel.getMetaModel(node.getClass()).getAccessors()) {
-                if (accessor.getValue(node) instanceof Properties) {
+                Object value = accessor.getValue(node);
+
+                if (value == null) {
+                    continue;
+                }
+
+                if (value instanceof Properties) {
                     mapProperties(node, accessor);
                 } else {
                     switch (accessor.getIdType()) {
@@ -241,11 +247,7 @@ public class UuidAdder extends UuidRewriter {
         }
 
         private void map(RbNode node, RbAccessor accessor, boolean isOrig) throws RollbaseException {
-            String value = (String)accessor.getValue(node);
-            if (value == null) {
-                throw new RollbaseException(String.format("Attribute '%s' of node type '%s' is not set", accessor.getName(), node.getClass().getSimpleName()));
-            }
-            long id = Long.parseLong(value);
+            long id = Long.parseLong((String)accessor.getValue(node));
             UUID mapped = map(id, isOrig, node);
 
             accessor.setValue(node, mapped.toString());
