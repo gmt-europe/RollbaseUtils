@@ -99,6 +99,16 @@ Specifically the merge step of this process is a bit involved. The merge process
 It is not required that these commits stay separate commits. If you are e.g. using Git, you can amend both these commits
 into the merge commit, since they really are artifacts created because of the merge process.
 
+### Application ID
+
+Every time you save your project using the "save" command, a new application ID is created. This ID is added to
+the IdMaps.xml file and is used to keep track of the mapping between Rollbase ID's and GUID's that RollbaseUtils
+creates. This application ID needs to be synchronized with your Rollbase application. This means that after you
+update the exported project using the "save" command, you need to issue a "load" command to re-created the
+XML export from the current state of the project. This file then needs to be imported back into Rollbase. This
+will make sure that the application ID in Rollbase is in sync with the application ID in the IdMaps.xml file
+in your export project.
+
 # Issues
 
 This project currently is in alpha state and there will be issues. If you find any problems with the libraries or
